@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
 });
 
 const SplashScreen = ({navigation}) =>{
+
      //splash Screen 
       setTimeout(()=>{
         navigation.navigate('Login')

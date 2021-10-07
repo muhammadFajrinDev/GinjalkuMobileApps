@@ -1,4 +1,4 @@
 import Login from "./Login";
-import SplashScreen from "./Splash.screen";
+import SplashScreen from "./splash-screen";
 
 export {SplashScreen,Login}

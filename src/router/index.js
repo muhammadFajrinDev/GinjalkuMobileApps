@@ -11,10 +11,11 @@ const Router = ({  }) =>{
     return (
         <Stack.Navigator>
               <Stack.Screen name="SplashScreen" options={{headerShown: false}} component={SplashScreen} /> 
-              <Stack.Screen name="Login" options={{headerShown: false}} component={Login} /> 
+              <Stack.Screen name="Login" options={{headerShown: false}} component={Login}/>     
         </Stack.Navigator>
     ) 
   
   }
+
   
 export default Router;
