@@ -13,7 +13,7 @@ const Separator = () =>{
    <Fragment>
           <View style={styles.container}>
             <View style={styles.line}/>
-              <Text style={styles.text}>atau</Text>
+              <Text style={styles.text}>Atau</Text>
             <View style={styles.line}/>
           </View>
    </Fragment>

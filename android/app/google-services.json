@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1015532825099",
+    "firebase_url": "https://sayangi-ginjal-default-rtdb.firebaseio.com",
+    "project_id": "sayangi-ginjal",
+    "storage_bucket": "sayangi-ginjal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015532825099:android:2ffd975a8f828232cbf50e",
+        "android_client_info": {
+          "package_name": "sayangi.ginjal.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015532825099-e00fkkt0op7vmco5jacd0jktll5hgbqd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sayangi.ginjal.mobile",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1015532825099-mv0cmcscva88l9f81p5l7g2uqmt3isg8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ7Zu7hdbpDHCR9fkVmUFKsuN5HROo1B4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015532825099-mv0cmcscva88l9f81p5l7g2uqmt3isg8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
