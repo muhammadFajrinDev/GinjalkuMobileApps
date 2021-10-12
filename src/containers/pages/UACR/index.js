@@ -40,36 +40,6 @@ const UACR = (props) =>{
         props.navigation.push("UACRDiagnose")
     }
 
-    // const uacr_interpretation = (gfr, uacr) =>{
-    //     if(uacr < 3){
-    //         if(gfr == "G1" || gfr == "G2"){
-    //             risk = "Low Risk";
-    //         }else if(gfr == "G3a"){
-    //             risk = "Moderate Risk";
-    //         }else if(gfr == "G3b"){
-    //             risk = "High Risk";
-    //         }else{
-    //             risk = "Very High Risk"
-    //         }
-    //     }else if ( uacr < 29 ){
-    //         if(gfr == "G1" || gfr == "G2"){
-    //             risk = "Moderate Risk";
-    //         }else if(gfr == "G3a"){
-    //             risk = "High Risk";
-    //         }else{
-    //             risk = "Very High Risk"
-    //         }
-    //     }else{
-    //         if(gfr == "G1" || gfr == "G2"){
-    //             risk = "High Risk";
-    //         }else{
-    //             risk = "Very High Risk"
-    //         }
-    //     }
-
-    //     return risk;
-    // }
-
     const SaveCheck = () => {
         Alert.alert(
             "Konfirmasi",

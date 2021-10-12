@@ -1,10 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React,  {  Fragment, useState, useEffect }  from 'react';
+import React,  {  Fragment, useEffect }  from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 
 //load Page
-import { SplashScreen, Login, Register, Dashboard ,Profile, News, Instruction, EGFR, eGEFRDiagnose, UACR, } from '../containers/pages'
+import { SplashScreen, Login, Register, Dashboard ,Profile, News, Instruction, EGFR, eGEFRDiagnose, UACR, UACRDiagnose} from '../containers/pages'
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +13,8 @@ const Router = (props) =>{
     return (
       <Fragment>
         
+        
+
         {/* Loading Overlay */}
         <Spinner visible={props.isLoading}/>
 
@@ -27,7 +29,7 @@ const Router = (props) =>{
               <Stack.Screen name="eGFR" options={{headerShown: false}} component={EGFR}/>   
               <Stack.Screen name="UACR" options={{headerShown: false}} component={UACR}/>  
               <Stack.Screen name="eGFRDiagnose" options={{headerShown: false}} component={eGEFRDiagnose}/>  
-              {/* <Stack.Screen name="UACRDiagnose" options={{headerShown: false}} component={UACRDiagnose}/>   */}
+              <Stack.Screen name="UACRDiagnose" options={{headerShown: false}} component={UACRDiagnose}/>  
         </Stack.Navigator>
       </Fragment>
     ) 
