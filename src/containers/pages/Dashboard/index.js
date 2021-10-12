@@ -43,10 +43,10 @@ const Dashboard = (props) =>{
         <ScrollView> 
 
         {/* Header */}
-        <HeaderDashboard onPress={()=> null} title="Hai,Fulan"/>
+        <HeaderDashboard onPress={()=> null} title="Hai, Fulan"/>
         
         {/* Card Menu */}
-        <Menu/>
+        <Menu MenuRedirect={props}/>
         
             <View style={styles.cardInformation}>
 
@@ -62,7 +62,7 @@ const Dashboard = (props) =>{
                 </View>
 
                 <View style={styles.containerCheckNow}>          
-                        <ButtonClassic title="Periksa Sekarang"/>
+                        <ButtonClassic title="Periksa Sekarang" onPress={()=> props.navigation.push("eGFR")}/>
                 </View>
                 <Image source={Organ} style={styles.imageOrgan}/> 
                      

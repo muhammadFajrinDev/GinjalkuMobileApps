@@ -7,7 +7,7 @@ import { Text, View, StyleSheet, ImageBackground, Image, TouchableHighlight  } f
 const styles = StyleSheet.create({
   ImgBackground :{ width: "100%", height:165 },
   containerText: { alignItems:"center", flexDirection:"row", justifyContent:"center", height:120 },
-  headerTitle : { fontSize:24, fontWeight:"bold", color:"#FFFFFF"}
+  headerTitle : { fontSize:22, fontWeight:"bold", color:"#FFFFFF"}
 });
 
 const HeaderBackBtn = (props) =>{

@@ -1,9 +1,8 @@
 const initialState = {
     isLogin : false,
     isLoading : false,
-    dataUser  :{
-
-    }
+    dataUser  :{},
+    dataEGFR : {}
   }
 
   const reducer = (state=initialState ,action) =>{
@@ -23,6 +22,12 @@ const initialState = {
         return {
           ...state,
           isLoading : action.value
+        }
+      }
+      if(action.type === 'CHANGE_EGFR'){
+        return {
+          ...state,
+          dataEGFR : action.value
         }
       }
     return state;

@@ -24,7 +24,6 @@ const Login = (props) =>{
     }).catch((err)=>{
       Alert.alert("Terjadi kesalahan otentikasi")
     });
-
   },[])
 
   const HandleloginAPIWithGoogle = () =>{

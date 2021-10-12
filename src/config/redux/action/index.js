@@ -4,6 +4,75 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import { Alert } from 'react-native';
 
+export const saveEGFR = (data) => async (dispatch) => {
+    
+    const dataUser = [];
+    const Combine = data;
+
+    getData("@user").then((idUser)=>{
+        database().ref('/users/' + idUser).once('value')
+        .then(snapshot => {
+           
+            Object.keys(snapshot.val()).map(key =>{
+                dataUser.push({
+                    id : key,
+                    data : snapshot.val()[key]
+                })
+            });
+            
+            Combine.birthdate = dataUser[0].data.birthdate;
+            Combine.gender = dataUser[0].data.gender;
+
+            dispatch({type : "CHANGE_EGFR", value: Combine})
+        });
+
+    }).catch((err)=>{
+        Alert.alert(err)
+    })
+
+}
+
+export const StoreToDBEGFR = (props,data) => async (dispatch) => {
+
+    dispatch({type : "CHANGE_LOADING", value: true})
+
+    const resultSub = data;
+    let GetidUser;
+
+    await getData("@user").then((idUser)=>{
+            GetidUser = idUser
+    }).catch((err)=>{
+        Alert.alert(err)
+    })
+    
+    const newReference = await database().ref('/history_check/' + GetidUser + '/' + new Date().getTime()).push();
+        
+    newReference.set(resultSub).then((res) => { 
+
+        Alert.alert("Riwayat Berhasil di simpan")
+        props.navigation.push("Dashboard")
+
+        dispatch({type : "CHANGE_LOADING", value: false})
+
+        dispatch({type : "CHANGE_EGFR", value: false})
+    }).catch((err)=>{
+        Alert.alert(err)
+    }); 
+
+}
+
+// Save Temp EGFR
+export const addedResult = (props,data) => async (dispatch) => {
+    dispatch({type : "CHANGE_EGFR", value: data})
+    props.navigation.push("UACR")
+}
+
+export const addedResultUACR = (props,data) => async (dispatch) => {
+
+    dispatch({type : "CHANGE_EGFR", value: data})
+    props.navigation.push("UACRDiagnose")
+}
+
 export const SigninWithGoogle = (props) => async (dispatch) => {
     dispatch({type : "CHANGE_LOADING", value: true})
     return new Promise ((resolve,reject)=>{
@@ -42,7 +111,6 @@ export const SigninWithGoogle = (props) => async (dispatch) => {
         }).catch((err)=>{
 
             dispatch({type : "CHANGE_LOADING", value: false})
-            console.log(err);
             resolve(false)
         });
     });
@@ -82,10 +150,11 @@ export const RegisterWithEmail = (data,props) => (dispatch) => {
         .then((userCredential) => {
 
             let userData = userCredential.additionalUserInfo;
+            let getUid = userCredential.user._user;
 
             if(userData.isNewUser){
             
-                const newReference = database().ref('/users').push();
+                const newReference = database().ref('/users/'+ getUid.uid).push();
                 
                 newReference.set(data).then(() => { 
                    
@@ -134,13 +203,11 @@ const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value)
       await AsyncStorage.setItem('@user', jsonValue)
-    
-      console.log(getData('@user'))
-
     } catch (e) {
       Alert.alert(e)
     }
   }
+
 
 export const getData = async (key) => {
     try {

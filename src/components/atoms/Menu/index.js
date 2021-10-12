@@ -28,11 +28,6 @@ const Menu = (props) =>{
             Alert.alert(Error)
         });
     }
-
-    const GoInstruction = () =>{
-        console.log("oko")
-    }
-    
   return ( 
     <Fragment> 
         <View style={styles.card}>
@@ -48,7 +43,7 @@ const Menu = (props) =>{
                 </TouchableOpacity>
             </View>   
             <View style={styles.row}>
-                <TouchableOpacity style={styles.col} onPress={() => GoInstruction()}>
+                <TouchableOpacity style={styles.col} onPress={() => props.MenuRedirect.navigation.push("Petunjuk")}>
                     <Image source={assignment} style={styles.img}/>
                     <Text style={styles.txt}>Petunjuk</Text>
                 </TouchableOpacity>

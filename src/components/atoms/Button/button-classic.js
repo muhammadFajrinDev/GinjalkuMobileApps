@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, StyleSheet  } from 'react-native';
 
 const styles = StyleSheet.create({
     btn: { backgroundColor:"#5589F0", padding:10, borderRadius:30, flexDirection:"row", justifyContent:"space-around"},
-    txt : { color:"#FFFFFF", fontSize:16, textAlign:"center" }
+    txt : { color:"#FFFFFF", fontSize:16, fontWeight:"bold", textAlign:"center" ,}
 });
 
 const ButtonClassic = (props) =>{
