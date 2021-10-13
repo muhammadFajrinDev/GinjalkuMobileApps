@@ -43,7 +43,7 @@ const Dashboard = (props) =>{
         <ScrollView> 
 
         {/* Header */}
-        <HeaderDashboard onPress={()=> null} title="Hai, Fulan"/>
+        <HeaderDashboard onPress={()=> props.navigation.push("Profile")} title="Hai, Fulan"/>
         
         {/* Card Menu */}
         <Menu MenuRedirect={props}/>

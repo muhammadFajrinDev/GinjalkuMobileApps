@@ -9,23 +9,21 @@ import { connect } from 'react-redux';
 import { Alert, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
-import { SigninWithGoogle,SigninWithEmail, getData } from "../../../config/redux/action";
+import { SigninWithGoogle,SigninWithEmail, getData, CheckUser } from "../../../config/redux/action";
 
 const Login = (props) =>{
 
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
 
-  
-  useEffect(()=>{
-    getData("@user").then((res) => {
-      if(res){
-        props.navigation.push("Dashboard")
-      }
-    }).catch((err)=>{
-      Alert.alert("Terjadi kesalahan otentikasi")
-    });
-  },[])
+  getData("@user").then((res) => {
+    if(res){
+      props.CheckUser(props)
+      props.navigation.push("Dashboard")
+    }
+  }).catch((err)=>{
+    Alert.alert("Terjadi kesalahan otentikasi")
+  });
 
   const HandleloginAPIWithGoogle = () =>{
     props.loginAPIWithGoogle(props)
@@ -76,7 +74,8 @@ const Login = (props) =>{
 
 const reduxDispatch = (dispatch) => ({
     loginAPIWithGoogle : (props) => dispatch(SigninWithGoogle(props)),
-    SigniAPIWithEmail : (data,props) => dispatch(SigninWithEmail(data,props))
+    SigniAPIWithEmail : (data,props) => dispatch(SigninWithEmail(data,props)),
+    CheckUser : (props) => dispatch(CheckUser(props))
 })
 
 export default connect(null,reduxDispatch)(Login);

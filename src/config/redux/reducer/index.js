@@ -2,7 +2,7 @@ const initialState = {
     isLogin : false,
     isLoading : false,
     dataUser  :{},
-    dataEGFR : {}
+    dataEGFR : {},
   }
 
   const reducer = (state=initialState ,action) =>{

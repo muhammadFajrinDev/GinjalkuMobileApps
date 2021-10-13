@@ -37,7 +37,6 @@ const UACR = (props) =>{
         props.dataEGFR.UACR = UACR
 
         props.sendTempUACR(props,props.dataEGFR)
-        props.navigation.push("UACRDiagnose")
     }
 
     const SaveCheck = () => {

@@ -24,6 +24,8 @@ export const saveEGFR = (data) => async (dispatch) => {
             Combine.gender = dataUser[0].data.gender;
 
             dispatch({type : "CHANGE_EGFR", value: Combine})
+        }).catch((Err)=>{
+            Alert.alert(Err)
         });
 
     }).catch((err)=>{
@@ -32,11 +34,94 @@ export const saveEGFR = (data) => async (dispatch) => {
 
 }
 
+export const getHistoryBaseUser = () =>  async (dispatch) =>{
+    const dataHistory = [];
+
+    dispatch({type : "CHANGE_LOADING", value: true})
+
+    return new Promise ((resolve,reject)=>{
+    getData("@user").then((idUser)=>{
+        database().ref('/history_check/' + idUser ).orderByKey('datetime').once('value')
+        .then(snapshot => {
+            if(snapshot.val()){
+                Object.keys(snapshot.val()).map(key =>{
+                    dataHistory.push({
+                        id : key,
+                        data : snapshot.val()[key]
+                    })
+                });
+            }
+            dispatch({type : "CHANGE_LOADING", value: false})
+
+            resolve(dataHistory)
+        }).catch((Err)=>{
+            Alert.alert(Err)
+        });
+        dispatch({type : "CHANGE_LOADING", value: false})
+
+    }).catch((err)=>{
+        Alert.alert(err)
+    })
+});
+}
+
+export const getHistoryDetail = (id) => async (dispatch) =>{
+    const Detail = [];
+
+    dispatch({type : "CHANGE_LOADING", value: true})
+
+    return new Promise ((resolve,reject)=>{
+
+    getData("@user").then((idUser)=>{
+        database().ref('/history_check/' + idUser + '/' + id ).once('value')
+        .then(snapshot => {
+            if(snapshot.val()){
+                resolve(snapshot.val())
+            }
+            dispatch({type : "CHANGE_LOADING", value: false})
+        }).catch((Err)=>{
+            resolve(false)
+            Alert.alert(Err)
+        });
+
+        dispatch({type : "CHANGE_LOADING", value: false})
+
+    }).catch((err)=>{
+        Alert.alert(err)
+    })
+});
+}
+
+
+export const CheckUser = (props) => async (dispatch) =>{
+    dispatch({type : "CHANGE_LOADING", value: true})
+
+    getData("@user").then((idUser)=>{
+        database().ref('/users/' + idUser ).once('value')
+        .then(snapshot => {
+            if(!snapshot.val()){
+                    if(removeSession("@user")){
+                        props.navigation.push("Login")
+                    }
+            }
+            
+            dispatch({type : "CHANGE_LOADING", value: false})
+        }).catch((Err)=>{
+            Alert.alert(Err)
+        });
+        dispatch({type : "CHANGE_LOADING", value: false})
+    }).catch((err)=>{
+        Alert.alert(err)
+    })
+}
+
 export const StoreToDBEGFR = (props,data) => async (dispatch) => {
 
     dispatch({type : "CHANGE_LOADING", value: true})
 
     const resultSub = data;
+    resultSub.datetime = new Date().getTime();
+    
     let GetidUser;
 
     await getData("@user").then((idUser)=>{
@@ -45,12 +130,12 @@ export const StoreToDBEGFR = (props,data) => async (dispatch) => {
         Alert.alert(err)
     })
     
-    const newReference = await database().ref('/history_check/' + GetidUser + '/' + new Date().getTime()).push();
+    const newReference = await database().ref('/history_check/' + GetidUser + '/' ).push();
         
     newReference.set(resultSub).then((res) => { 
 
         Alert.alert("Riwayat Berhasil di simpan")
-        props.navigation.push("Dashboard")
+        props.navigation.push("History")
 
         dispatch({type : "CHANGE_LOADING", value: false})
 
@@ -63,14 +148,21 @@ export const StoreToDBEGFR = (props,data) => async (dispatch) => {
 
 // Save Temp EGFR
 export const addedResult = (props,data) => async (dispatch) => {
-    dispatch({type : "CHANGE_EGFR", value: data})
-    props.navigation.push("UACR")
+    dispatch({type : "CHANGE_LOADING", value: true})
+    setTimeout(()=>{
+        dispatch({type : "CHANGE_LOADING", value: false})
+        dispatch({type : "CHANGE_EGFR", value: data})
+        props.navigation.push("UACR")
+    },2000)
 }
 
 export const addedResultUACR = (props,data) => async (dispatch) => {
-
-    dispatch({type : "CHANGE_EGFR", value: data})
-    props.navigation.push("UACRDiagnose")
+    dispatch({type : "CHANGE_LOADING", value: true})
+    setTimeout(()=>{
+        dispatch({type : "CHANGE_LOADING", value: false})
+        dispatch({type : "CHANGE_EGFR", value: data})
+        props.navigation.push("UACRDiagnose")
+    },2000)
 }
 
 export const SigninWithGoogle = (props) => async (dispatch) => {
@@ -215,5 +307,15 @@ export const getData = async (key) => {
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch(e) {
       Alert.alert(e)
+    }
+}
+
+const removeSession = async (key) =>{
+    try {
+        await AsyncStorage.removeItem(key);
+        return true;
+    }
+    catch(exception) {
+        return false;
     }
 }
