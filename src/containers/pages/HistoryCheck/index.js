@@ -55,7 +55,7 @@ const History = (props)  => {
             })
         }
         {
-            history.length > 5 && (
+            history.length == 0 && (
                 <View style={{alignItems:"center", marginVertical:20}}>
                     <Text style={styles.date}>No more data</Text>
                 </View>

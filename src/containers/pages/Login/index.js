@@ -16,15 +16,7 @@ const Login = (props) =>{
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
 
-  getData("@user").then((res) => {
-    if(res){
-      props.CheckUser(props)
-      props.navigation.push("Dashboard")
-    }
-  }).catch((err)=>{
-    Alert.alert("Terjadi kesalahan otentikasi")
-  });
-
+ 
   const HandleloginAPIWithGoogle = () =>{
     props.loginAPIWithGoogle(props)
   }
@@ -43,7 +35,7 @@ const Login = (props) =>{
 
           {/* Body */}
           <View style={{alignSelf:"center",marginTop:40, marginBottom:20}}>
-              <ButtonIcon title="Masuk dengan Google" onPress={HandleloginAPIWithGoogle}/> 
+              <ButtonIcon title="Masuk dengan Google" onPress={Alert.alert("Still on development")}/> 
           </View>
 
           <Separator/>
@@ -75,7 +67,7 @@ const Login = (props) =>{
 const reduxDispatch = (dispatch) => ({
     loginAPIWithGoogle : (props) => dispatch(SigninWithGoogle(props)),
     SigniAPIWithEmail : (data,props) => dispatch(SigninWithEmail(data,props)),
-    CheckUser : (props) => dispatch(CheckUser(props))
+    // CheckUser : (props) => dispatch(CheckUser(props))
 })
 
 export default connect(null,reduxDispatch)(Login);

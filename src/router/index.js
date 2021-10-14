@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React,  {  Fragment, useEffect }  from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
+import React,  { Fragment }  from 'react';
 import { connect } from 'react-redux';
 
 //load Page
@@ -9,12 +9,10 @@ import { SplashScreen, Login, Register, Dashboard ,Profile, News, Instruction, E
 const Stack = createNativeStackNavigator();
 
 const Router = (props) =>{
-  
-        {/* Loading Overlay */}
-        <Spinner visible={false}/>
+
     return (
       <Fragment>
-
+        <Spinner visible={props.isLoading}/>
         <Stack.Navigator>        
               <Stack.Screen name="SplashScreen" options={{headerShown: false}} component={SplashScreen} /> 
               <Stack.Screen name="Petunjuk" options={{headerShown: false}} component={Instruction}/>  
@@ -36,7 +34,7 @@ const Router = (props) =>{
   }
 
 const reduxState = (state) =>({
-    isLoading : state.isLoading    
+    isLoading : state.isLoading,
 })
-  
+
 export default connect(reduxState,null)(Router);

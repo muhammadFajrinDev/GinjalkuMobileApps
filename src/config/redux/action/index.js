@@ -4,34 +4,48 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import { Alert } from 'react-native';
 
-export const saveEGFR = (data) => async (dispatch) => {
+export const saveEGFR = (props,data) => (dispatch) => {
     
+    dispatch({type : "CHANGE_LOADING", value: true})
+
     const dataUser = [];
     const Combine = data;
 
     getData("@user").then((idUser)=>{
-        database().ref('/users/' + idUser).once('value')
-        .then(snapshot => {
-           
-            Object.keys(snapshot.val()).map(key =>{
-                dataUser.push({
-                    id : key,
-                    data : snapshot.val()[key]
-                })
-            });
-            
-            Combine.birthdate = dataUser[0].data.birthdate;
-            Combine.gender = dataUser[0].data.gender;
+        if(idUser){
+            database().ref('/users/' + idUser).once('value')
+            .then(snapshot => {
+               
+                Object.keys(snapshot.val()).map(key =>{
+                    dataUser.push({
+                        id : key,
+                        data : snapshot.val()[key]
+                    })
+                });
+                
+                Combine.birthdate = getAge(dataUser[0].data.birthdate);
+                Combine.gender = dataUser[0].data.gender;
 
+                setTimeout(()=>{
+                    dispatch({type : "CHANGE_EGFR", value: Combine})
+                    dispatch({type : "CHANGE_LOADING", value: false})
+                    props.navigation.push("eGFRDiagnose")
+                },2000)
+
+            }).catch((Err)=>{
+                Alert.alert(Err)
+            });
+        }else{
             dispatch({type : "CHANGE_EGFR", value: Combine})
-        }).catch((Err)=>{
-            Alert.alert(Err)
-        });
+            setTimeout(()=>{
+                dispatch({type : "CHANGE_LOADING", value: false})
+                props.navigation.push("eGFRDiagnose")
+            },2000)
+        }
 
     }).catch((err)=>{
         Alert.alert(err)
     })
-
 }
 
 export const getHistoryBaseUser = () =>  async (dispatch) =>{
@@ -93,26 +107,41 @@ export const getHistoryDetail = (id) => async (dispatch) =>{
 }
 
 
-export const CheckUser = (props) => async (dispatch) =>{
+export const CheckUser = (props) => (dispatch) =>{
+    console.log("-",props)
+    // removeSession("@user") 
     dispatch({type : "CHANGE_LOADING", value: true})
 
+    //check is user already register to db, if user not yet will redirect to login
     getData("@user").then((idUser)=>{
+      
         database().ref('/users/' + idUser ).once('value')
         .then(snapshot => {
+            
             if(!snapshot.val()){
-                    if(removeSession("@user")){
-                        props.navigation.push("Login")
-                    }
+                if(removeSession("@user")){
+                    props.navigation.push("Login")
+                    dispatch({type : "CHANGE_ISLOGIN", value: false})
+                }
+            }else{
+                //get Data User on login
+                Object.keys(snapshot.val()).map(key =>{
+                    dispatch({type : "CHANGE_USER", value: snapshot.val()[key]})
+                });
+                
+                dispatch({type : "CHANGE_ISLOGIN", value: true})
+                
+                props.navigation.push("Dashboard")
             }
             
-            dispatch({type : "CHANGE_LOADING", value: false})
         }).catch((Err)=>{
             Alert.alert(Err)
         });
-        dispatch({type : "CHANGE_LOADING", value: false})
     }).catch((err)=>{
         Alert.alert(err)
     })
+
+    dispatch({type : "CHANGE_LOADING", value: false})
 }
 
 export const StoreToDBEGFR = (props,data) => async (dispatch) => {
@@ -143,7 +172,6 @@ export const StoreToDBEGFR = (props,data) => async (dispatch) => {
     }).catch((err)=>{
         Alert.alert(err)
     }); 
-
 }
 
 // Save Temp EGFR
@@ -157,6 +185,7 @@ export const addedResult = (props,data) => async (dispatch) => {
 }
 
 export const addedResultUACR = (props,data) => async (dispatch) => {
+   
     dispatch({type : "CHANGE_LOADING", value: true})
     setTimeout(()=>{
         dispatch({type : "CHANGE_LOADING", value: false})
@@ -186,9 +215,7 @@ export const SigninWithGoogle = (props) => async (dispatch) => {
                 }
                 
                 newReference.set(dataSet).then(() => { 
-                    
-                    
-                    
+                
                 }).catch((err)=>{
                     Alert.alert(err)
                 });              
@@ -197,6 +224,8 @@ export const SigninWithGoogle = (props) => async (dispatch) => {
             storeData(userDataDetail.uid)
 
             props.navigation.push("Dashboard")
+
+            dispatch({type : "CHANGE_ISLOGIN", value: true})
             dispatch({type : "CHANGE_LOADING", value: false})
 
             resolve(true)
@@ -208,19 +237,21 @@ export const SigninWithGoogle = (props) => async (dispatch) => {
     });
 }
 
-export const SigninWithEmail = (data,props) => (dispatch) => {
+export const SigninWithEmail = (data,props) => async (dispatch) => {
     dispatch({type : "CHANGE_LOADING", value: true})
 
     auth()
     .signInWithEmailAndPassword(data.email, data.password)
     .then((res) => {
-        
         let getUid = res.user._user;
 
-        storeData(getUid.uid)
-        props.navigation.push("Dashboard")
-        dispatch({type : "CHANGE_LOADING", value: false})
-
+        // Save uid for get detail user
+        storeData(getUid.uid).then(()=>{
+            //this function is for redirect to dashboard and save data user after siginin
+            props.navigation.push("SplashScreen")
+        }).catch(err=>{
+            console.log(err)
+        })
     })
     .catch(error => {
         if (error.code === 'auth/wrong-password') {
@@ -230,12 +261,18 @@ export const SigninWithEmail = (data,props) => (dispatch) => {
         if (error.code === 'auth/user-not-found') {
             Alert.alert('User / Email tidak terdaftar, pastikan anda sudah melakukan pendaftaran.');
         }
+
+        if (error.code === 'auth/invalid-email') {
+            Alert.alert('Alamat email tidak valid');
+        }
+
     dispatch({type : "CHANGE_LOADING", value: false})
     });
 }
 
 export const RegisterWithEmail = (data,props) => (dispatch) => {
     dispatch({type : "CHANGE_LOADING", value: true})
+
      new Promise ((resolve,reject)=>{
         auth()
         .createUserWithEmailAndPassword(data.email, data.password)
@@ -295,6 +332,7 @@ const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value)
       await AsyncStorage.setItem('@user', jsonValue)
+      return true;
     } catch (e) {
       Alert.alert(e)
     }
@@ -318,4 +356,17 @@ const removeSession = async (key) =>{
     catch(exception) {
         return false;
     }
+}
+
+const getAge = (dateString) =>
+{
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+    {
+        age--;
+    }
+    return age;
 }

@@ -71,18 +71,6 @@ const gfr_interpretation = (gfr) => {
     return status;
 }
 
-const getAge = (dateString) =>
-{
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
-    {
-        age--;
-    }
-    return age;
-}
 
 const DiagnoseEGFR = (props) =>{
 
@@ -91,27 +79,48 @@ const DiagnoseEGFR = (props) =>{
     let EGFReducer = props.dataEGFR;
 
     const SaveCheck = () => {
-
-        EGFReducer.EGFR = resultEGFR
-
-        Alert.alert(
-            "Konfirmasi",
-            "Apakah anda yakin ?",
-            [
-              {
-                text: "Ya",
-                onPress: () => {
-                    //store to DB
-                    props.saveToDBEGFR(props,EGFReducer)
-                }
-              },
-              {
-                text: "Tidak",
-                onPress: () => {},
-                style: "cancel"
-              },
-            ]
-        );
+      
+        if(!props.isLogin){
+            Alert.alert(
+                "Informasi",
+                "Anda harus login terlebih dahulu untuk menyimpan hasil cek anda ",
+                [
+                  {
+                    text: "Login",
+                    onPress: () => {
+                        return props.navigation.push("Login")
+                    }
+                  },
+                  {
+                    text: "Cancel",
+                    onPress: () => {},
+                    style: "cancel"
+                  },
+                ]
+            );
+        }else{
+            
+            EGFReducer.EGFR = resultEGFR
+    
+            Alert.alert(
+                "Konfirmasi",
+                "Apakah anda yakin ?",
+                [
+                  {
+                    text: "Ya",
+                    onPress: () => {
+                        //store to DB
+                        props.saveToDBEGFR(props,EGFReducer)
+                    }
+                  },
+                  {
+                    text: "Tidak",
+                    onPress: () => {},
+                    style: "cancel"
+                  },
+                ]
+            );
+        }
     }
 
     const toUACR = () =>{
@@ -122,7 +131,7 @@ const DiagnoseEGFR = (props) =>{
     }
     
     useEffect(()=>{
-        let resultEGFR = gfr_interpretation(calculate_egfr(EGFReducer.creatinine, EGFReducer.gender, getAge(EGFReducer.birthdate), EGFReducer.race))
+        let resultEGFR = gfr_interpretation(calculate_egfr(EGFReducer.creatinine, EGFReducer.gender, EGFReducer.birthdate, EGFReducer.race))
         setResultEGFR(resultEGFR)
     },[])
 
@@ -176,7 +185,8 @@ const DiagnoseEGFR = (props) =>{
 
 
 const reduxState = (state) =>({
-    dataEGFR : state.dataEGFR
+    dataEGFR : state.dataEGFR,
+    isLogin : state.isLogin
 })
 
 const reduxDispatch = (dispatch) => ({

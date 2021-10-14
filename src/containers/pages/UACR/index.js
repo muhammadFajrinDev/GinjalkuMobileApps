@@ -6,6 +6,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import BlueText from '../../../components/atoms/Bluetext';
 import { StyleSheet, Text, View, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import { statusCodes } from '@react-native-google-signin/google-signin';
 
 const styles = StyleSheet.create({
     cardInformation: {
@@ -29,6 +30,10 @@ const UACR = (props) =>{
     const [UACR, setUACR] = useState();
     const [resultEGFR, setResultEGFR] = useState(null);
 
+    useEffect(()=>{
+        setUACR(props.dataEGFR.UACR)
+    },[])
+
     const DiagnoseUACR = () => {
         if(UACR == null){
             return  Alert.alert("Mohon lengkapi semua formulir.")
@@ -40,24 +45,46 @@ const UACR = (props) =>{
     }
 
     const SaveCheck = () => {
-        Alert.alert(
-            "Konfirmasi",
-            "Apakah anda yakin ?",
-            [
-              {
-                text: "Ya",
-                onPress: () => {
-                    //store to DB
-                    props.saveToDBEGFR(props,props.dataEGFR)
-                }
-              },
-              {
-                text: "Tidak",
-                onPress: () => {},
-                style: "cancel"
-              },
-            ]
-        );
+        console.log("islogin : ",props.isLogin)
+        if(!props.isLogin){
+            Alert.alert(
+                "Informasi",
+                "Anda harus login terlebih dahulu untuk menyimpan hasil cek anda ",
+                [
+                  {
+                    text: "Login",
+                    onPress: () => {
+                        return props.navigation.push("Login")
+                    }
+                  },
+                  {
+                    text: "Cancel",
+                    onPress: () => {},
+                    style: "cancel"
+                  },
+                ]
+            );
+        }else{
+
+            Alert.alert(
+                "Konfirmasi",
+                "Apakah anda yakin ?",
+                [
+                {
+                    text: "Ya",
+                    onPress: () => {
+                        //store to DB
+                        props.saveToDBEGFR(props,props.dataEGFR)
+                    }
+                },
+                {
+                    text: "Tidak",
+                    onPress: () => {},
+                    style: "cancel"
+                },
+                ]
+            );
+        }
     }
     
     useEffect(()=>{
@@ -104,7 +131,7 @@ const UACR = (props) =>{
                     <BlueText title="UACR"/>
                 </View>
                 <View style={{margin:5}}>
-                    <TextInputClassic onChangeText={(el)=>setUACR(el)} title="mg/g"/>
+                    <TextInputClassic value={UACR} keyboardType="numeric" onChangeText={(el)=>setUACR(el)} title="mg/g"/>
                 </View>
             </View>
         </View>
@@ -119,7 +146,8 @@ const UACR = (props) =>{
 
 
 const reduxState = (state) =>({
-    dataEGFR : state.dataEGFR
+    dataEGFR : state.dataEGFR,
+    isLogin : state.isLogin
 })
 
 const reduxDispatch = (dispatch) => ({

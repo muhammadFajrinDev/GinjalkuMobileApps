@@ -8,6 +8,7 @@ import Organ from '../../../assets/thumb/organ.png';
 import BlueText from '../../../components/atoms/Bluetext';
 import CardNews from '../../../components/atoms/CardNews';
 import ButtonClassic from '../../../components/atoms/Button/button-classic';
+import HeaderBackBtn from '../../../components/atoms/Header/header-backbtn';
 
 const Dashboard = (props) =>{
   
@@ -43,8 +44,14 @@ const Dashboard = (props) =>{
         <ScrollView> 
 
         {/* Header */}
-        <HeaderDashboard onPress={()=> props.navigation.push("Profile")} title="Hai, Fulan"/>
-        
+        {
+            props.isLogin ? (
+                 <HeaderDashboard onPress={()=> props.navigation.push("Profile")} title={"Hai "+props.dataUser.fullname}/>
+            ) : (
+                <HeaderBackBtn title="Selamat Datang..." page="Login" navigation={props.navigation}/>
+            )
+        }
+
         {/* Card Menu */}
         <Menu MenuRedirect={props}/>
         
@@ -91,5 +98,10 @@ const Dashboard = (props) =>{
   ) 
 }
 
-export default connect(null,null)(Dashboard);
+const reduxState = (state) =>({
+    isLogin : state.isLogin,
+    dataUser : state.dataUser
+})
+
+export default connect(reduxState,null)(Dashboard);
 

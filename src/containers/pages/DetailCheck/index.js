@@ -4,6 +4,7 @@ import { getHistoryDetail } from '../../../config/redux/action';
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { EGFR } from '..';
 
 
 const styles = StyleSheet.create({
@@ -23,6 +24,7 @@ const getAge = (dateString) =>
 {
     var today = new Date();
     var birthDate = new Date(dateString);
+    console.log(birthDate)
     var age = today.getFullYear() - birthDate.getFullYear();
     var m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
@@ -48,8 +50,7 @@ const Detail = (props) =>{
         })
 
     },[itemId])
-
-    console.log(detail)                
+             
   return (  
      <Fragment>
 
@@ -63,7 +64,7 @@ const Detail = (props) =>{
 
             <View style={styles.paragraf}>
                 <Text style={styles.texttitle}>Rekap Data</Text>
-                <Text style={styles.content}> {'\u2022'} Usia : {getAge(detail.birthdate)} Tahun </Text>
+                <Text style={styles.content}> {'\u2022'} Usia : {detail.age} Tahun </Text>
                 <Text style={styles.content}> {'\u2022'} Berat Badan : {detail.weight} Kg </Text>
                 <Text style={styles.content}> {'\u2022'} Ras : {detail.race == 'Non African' ? 'Lainnya' : 'African'}  </Text>
                 <Text style={styles.content}> {'\u2022'} Serum Creatinine : {detail.creatinine} mg/dL</Text>
@@ -87,8 +88,9 @@ const Detail = (props) =>{
 
             <View style={styles.paragraf}>
                 <Text style={styles.texttitle}>Hasil Pemeriksaan</Text>
-                <Text style={styles.content}> {'\u2022'} Stadium G1 </Text>
-                <Text style={styles.content}> {'\u2022'} Resiko Rendah </Text>
+
+                <Text style={styles.content}> {'\u2022'} Stadium {detail.EGFR} </Text>
+                {/* <Text style={styles.content}> {'\u2022'} Resiko  </Text> */}
             </View>
             
        </View>

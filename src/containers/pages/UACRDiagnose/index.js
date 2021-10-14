@@ -59,24 +59,44 @@ const UACRDiagnose = (props) =>{
 
     const SaveCheck = () => {
 
-        Alert.alert(
-            "Konfirmasi",
-            "Apakah anda yakin ?",
-            [
-              {
-                text: "Ya",
-                onPress: () => {
-                    //store to DB
-                    props.saveToDBEGFR(props,EGFReducer)
-                }
-              },
-              {
-                text: "Tidak",
-                onPress: () => {},
-                style: "cancel"
-              },
-            ]
-        );
+        if(!props.isLogin){
+            Alert.alert(
+                "Informasi",
+                "Anda harus login terlebih dahulu untuk menyimpan hasil cek anda ",
+                [
+                  {
+                    text: "Login",
+                    onPress: () => {
+                        return props.navigation.push("Login")
+                    }
+                  },
+                  {
+                    text: "Cancel",
+                    onPress: () => {},
+                    style: "cancel"
+                  },
+                ]
+            );
+        }else{
+            Alert.alert(
+                "Konfirmasi",
+                "Apakah anda yakin ?",
+                [
+                {
+                    text: "Ya",
+                    onPress: () => {
+                        //store to DB
+                        props.saveToDBEGFR(props,EGFReducer)
+                    }
+                },
+                {
+                    text: "Tidak",
+                    onPress: () => {},
+                    style: "cancel"
+                },
+                ]
+            );
+        }
     }
 
  
@@ -121,7 +141,8 @@ const UACRDiagnose = (props) =>{
 
 
 const reduxState = (state) =>({
-    dataEGFR : state.dataEGFR
+    dataEGFR : state.dataEGFR,
+    isLogin : state.isLogin
 })
 
 const reduxDispatch = (dispatch) => ({

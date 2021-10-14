@@ -4,7 +4,7 @@ const initialState = {
     dataUser  :{},
     dataEGFR : {},
   }
-
+  console.log("++",initialState)
   const reducer = (state=initialState ,action) =>{
     if(action.type === 'CHANGE_ISLOGIN'){
       return {
@@ -13,12 +13,13 @@ const initialState = {
       }
     }
     if(action.type === 'CHANGE_USER'){
-        return {
+      return {
           ...state,
           dataUser : action.value
         }
       }
       if(action.type === 'CHANGE_LOADING'){
+   
         return {
           ...state,
           isLoading : action.value

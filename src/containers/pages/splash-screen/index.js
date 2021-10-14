@@ -1,6 +1,8 @@
-import React from 'react';
-import { Image, Text, View,StyleSheet  } from 'react-native';
+import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
 import logoSplash from '../../../assets/logo/splash.png';
+import { Image, Text, View,StyleSheet, Alert  } from 'react-native';
+import { CheckUser, getData } from '../../../config/redux/action';
 
 const styles = StyleSheet.create({
   background :{width:"100%",height:"100%",backgroundColor:"#FBFBFB",
@@ -9,12 +11,13 @@ const styles = StyleSheet.create({
   imgCenter : { width: "80%", alignSelf:"center"}
 });
 
-const SplashScreen = ({navigation}) =>{
+const SplashScreen = (props) =>{
 
-     //splash Screen 
-      setTimeout(()=>{
-        navigation.navigate('Login')
-      },3000)
+      useEffect(()=>{
+        setTimeout(()=>{
+              props.CheckUser(props)
+        },1000)
+      },[])
 
   return (  
    <View style={styles.background}>
@@ -26,4 +29,9 @@ const SplashScreen = ({navigation}) =>{
   ) 
 }
 
-export default SplashScreen;
+const reduxDispatch = (dispatch) => ({
+  CheckUser : (props) => dispatch(CheckUser(props)),
+})
+
+
+export default connect(null,reduxDispatch)(SplashScreen);
