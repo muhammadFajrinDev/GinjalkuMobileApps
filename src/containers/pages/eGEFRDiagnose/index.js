@@ -137,6 +137,7 @@ const DiagnoseEGFR = (props) =>{
 
   return (  
      <Fragment>
+        
          <HeaderBackBtn page="eGFR" navigation={props.navigation} title="Diagnosis eGFR"/>
          
          <View style={styles.cardInformation}>

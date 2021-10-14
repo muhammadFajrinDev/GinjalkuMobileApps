@@ -65,17 +65,20 @@ export const getHistoryBaseUser = () =>  async (dispatch) =>{
                     })
                 });
             }
+
             dispatch({type : "CHANGE_LOADING", value: false})
 
             resolve(dataHistory)
         }).catch((Err)=>{
+            dispatch({type : "CHANGE_LOADING", value: false})
             Alert.alert(Err)
         });
-        dispatch({type : "CHANGE_LOADING", value: false})
-
+        
     }).catch((err)=>{
         Alert.alert(err)
+        dispatch({type : "CHANGE_LOADING", value: false})
     })
+
 });
 }
 
@@ -96,9 +99,9 @@ export const getHistoryDetail = (id) => async (dispatch) =>{
         }).catch((Err)=>{
             resolve(false)
             Alert.alert(Err)
+            dispatch({type : "CHANGE_LOADING", value: false})
         });
 
-        dispatch({type : "CHANGE_LOADING", value: false})
 
     }).catch((err)=>{
         Alert.alert(err)

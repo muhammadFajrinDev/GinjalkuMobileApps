@@ -26,9 +26,10 @@ const History = (props)  => {
     
     useEffect(()=>{
         props.getHistory().then((res)=>{
+            console.log(res)
             setHistory(res)
         })
-    },[history])
+    },[])
 
   return (  
      <Fragment>

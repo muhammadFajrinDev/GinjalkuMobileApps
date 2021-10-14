@@ -35,7 +35,7 @@ const Login = (props) =>{
 
           {/* Body */}
           <View style={{alignSelf:"center",marginTop:40, marginBottom:20}}>
-              <ButtonIcon title="Masuk dengan Google" onPress={Alert.alert("Still on development")}/> 
+              <ButtonIcon title="Masuk dengan Google" onPress={()=> Alert.alert("Maaf blum bisa digunakan, silahkan melalui email")}/> 
           </View>
 
           <Separator/>

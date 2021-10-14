@@ -6,6 +6,7 @@ import BlueText from '../../../components/atoms/Bluetext';
 import { saveEGFR } from '../../../config/redux/action';
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const styleSelect = StyleSheet.create({
     selectActive :{ 
@@ -93,6 +94,7 @@ const EGFR = (props) =>{
 
   return (  
      <Fragment>
+       <ScrollView>
          <HeaderBackBtn page="Dashboard" navigation={props.navigation} title="Formulir eGFR"/>
           
          <View style={styles.inputGroup}>
@@ -175,7 +177,7 @@ const EGFR = (props) =>{
         <View style={{alignSelf:"center",marginVertical:40,width:"70%"}}>
             <ButtonClassic title="Proses" onPress={()=> submitEGFR()}/>
         </View>
-
+      </ScrollView>
      </Fragment>
   ) 
 }
