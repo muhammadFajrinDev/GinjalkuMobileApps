@@ -114,7 +114,7 @@ const UACR = (props) =>{
                     Rekomendasi :
                 </Text>
                 <Text style={styles.contentInformation}>
-                    Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
+                  
                 </Text>
             </View>
 

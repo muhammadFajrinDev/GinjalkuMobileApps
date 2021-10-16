@@ -73,7 +73,6 @@ const Login = (props) =>{
 const reduxDispatch = (dispatch) => ({
     loginAPIWithGoogle : (props) => dispatch(SigninWithGoogle(props)),
     SigniAPIWithEmail : (data,props) => dispatch(SigninWithEmail(data,props)),
-    // CheckUser : (props) => dispatch(CheckUser(props))
 })
 
 export default connect(null,reduxDispatch)(Login);

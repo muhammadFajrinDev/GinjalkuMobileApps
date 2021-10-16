@@ -38,7 +38,6 @@ const styleSelect = StyleSheet.create({
       inputGroup : { width:"90%", marginVertical:3 },
       itemGroup: { marginHorizontal:30, marginVertical: 6},
   });
-  
 
 const EGFR = (props) =>{
 

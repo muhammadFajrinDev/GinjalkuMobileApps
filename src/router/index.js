@@ -10,7 +10,7 @@ import { Alert, BackHandler } from 'react-native';
 const Stack = createNativeStackNavigator();
 
 const Router = (props) =>{
-  console.log(props)
+
   let count = 1;
 
   BackHandler.addEventListener(
@@ -42,6 +42,7 @@ const Router = (props) =>{
       count += 1 
     }
   );
+
     return (
       <Fragment>
         <Spinner visible={props.isLoading}/>

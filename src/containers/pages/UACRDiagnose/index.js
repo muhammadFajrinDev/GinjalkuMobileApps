@@ -26,8 +26,10 @@ const UACRDiagnose = (props) =>{
     const [resultEGFR, setResultEGFR] = useState(null)
 
     let EGFReducer = props.dataEGFR;
+    console.log(props.dataEGFR)
 
     const uacr_interpretation = (gfr, uacr) =>{
+        let risk;
         if(uacr < 3){
             if(gfr == "G1" || gfr == "G2"){
                 risk = "Low Risk";
@@ -126,7 +128,7 @@ const UACRDiagnose = (props) =>{
                     Rekomendasi :
                 </Text>
                 <Text style={styles.contentInformation}>
-                    Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
+                  
                 </Text>
             </View>
 

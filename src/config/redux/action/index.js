@@ -201,6 +201,7 @@ export const addedResultUACR = (props,data) => async (dispatch) => {
 }
 
 export const SigninWithGoogle = (props) => async (dispatch) => {
+    console.log("ok")
     dispatch({type : "CHANGE_LOADING", value: true})
     return new Promise ((resolve,reject)=>{
         excuteLoginFirebase().then((userCredential)=>{
@@ -286,7 +287,7 @@ export const RegisterWithEmail = (data,props) => (dispatch) => {
 
             let userData = userCredential.additionalUserInfo;
             let getUid = userCredential.user._user;
-            
+
             data.password = null;
 
             if(userData.isNewUser){
@@ -327,10 +328,9 @@ async function excuteLoginFirebase (){
 
     GoogleSignin.configure({
         webClientId: '1015532825099-mv0cmcscva88l9f81p5l7g2uqmt3isg8.apps.googleusercontent.com',
-        scopes: ['https://www.googleapis.com/auth/user.gender.read', 'https://www.googleapis.com/auth/user.birthday.read']
     });
 
-    const { accessToken,idToken } = await GoogleSignin.signInd();
+    const { accessToken,idToken } = await GoogleSignin.signIn();
 
     const googleCredential = auth.GoogleAuthProvider.credential(idToken,accessToken);
 
@@ -345,7 +345,7 @@ const storeData = async (value) => {
     } catch (e) {
       Alert.alert(e)
     }
-  }
+}
 
 
 export const getData = async (key) => {

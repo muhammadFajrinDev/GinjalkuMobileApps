@@ -75,7 +75,7 @@ const gfr_interpretation = (gfr) => {
 const DiagnoseEGFR = (props) =>{
 
     const [resultEGFR, setResultEGFR] = useState(null)
-
+  
     let EGFReducer = props.dataEGFR;
 
     const SaveCheck = () => {
@@ -131,7 +131,9 @@ const DiagnoseEGFR = (props) =>{
     }
     
     useEffect(()=>{
-        let resultEGFR = gfr_interpretation(calculate_egfr(EGFReducer.creatinine, EGFReducer.gender, EGFReducer.birthdate, EGFReducer.race))
+        let resultEGFR = gfr_interpretation(calculate_egfr(EGFReducer.creatinine, EGFReducer.gender, EGFReducer.age, EGFReducer.race))
+        console.log("+++ calculate EGFR",calculate_egfr(EGFReducer.creatinine, EGFReducer.gender, EGFReducer.age, EGFReducer.race))
+
         setResultEGFR(resultEGFR)
     },[])
 
@@ -157,7 +159,7 @@ const DiagnoseEGFR = (props) =>{
                     Rekomendasi :
                 </Text>
                 <Text style={styles.contentInformation}>
-                    Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."
+                 
                 </Text>
             </View>
 
