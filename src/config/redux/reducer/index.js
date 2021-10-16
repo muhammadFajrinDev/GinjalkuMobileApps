@@ -3,6 +3,7 @@ const initialState = {
     isLoading : false,
     dataUser  :{},
     dataEGFR : {},
+    navState : {}
   }
   console.log("++",initialState)
   const reducer = (state=initialState ,action) =>{
@@ -29,6 +30,12 @@ const initialState = {
         return {
           ...state,
           dataEGFR : action.value
+        }
+      }
+      if(action.type === 'CHANGE_NAV'){
+        return {
+          ...state,
+          navState : action.value
         }
       }
     return state;

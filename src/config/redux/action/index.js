@@ -23,7 +23,7 @@ export const saveEGFR = (props,data) => (dispatch) => {
                     })
                 });
                 
-                Combine.birthdate = getAge(dataUser[0].data.birthdate);
+                Combine.birthdate = dataUser[0].data.birthdate;
                 Combine.gender = dataUser[0].data.gender;
 
                 setTimeout(()=>{
@@ -109,10 +109,13 @@ export const getHistoryDetail = (id) => async (dispatch) =>{
 });
 }
 
+export const getNavigator = (props) => (dispatch) =>{
+    dispatch({type : "CHANGE_NAV", value: props})
+}
 
 export const CheckUser = (props) => (dispatch) =>{
     console.log("-",props)
-    // removeSession("@user") 
+    removeSession("@user") 
     dispatch({type : "CHANGE_LOADING", value: true})
 
     //check is user already register to db, if user not yet will redirect to login
@@ -201,37 +204,37 @@ export const SigninWithGoogle = (props) => async (dispatch) => {
     dispatch({type : "CHANGE_LOADING", value: true})
     return new Promise ((resolve,reject)=>{
         excuteLoginFirebase().then((userCredential)=>{
-
-            let userData = userCredential.additionalUserInfo;
-            let userDataDetail = userCredential.user._user;
+            console.log(userCredential)
+            // let userData = userCredential.additionalUserInfo;
+            // let userDataDetail = userCredential.user._user;
             
-            if(userData.isNewUser){
-                const newReference = database().ref('/users').push();
+            // if(userData.isNewUser){
+            //     const newReference = database().ref('/users').push();
 
-                let dataSet = {
-                    birthdate: null,
-                    email: userData.profile.email,
-                    gender:null,
-                    fullname: userData.profile.name,
-                    given_name: userData.profile.given_name,
-                    phoneNumber : userDataDetail.phoneNumber
-                }
+            //     let dataSet = {
+            //         birthdate: null,
+            //         email: userData.profile.email,
+            //         gender:null,
+            //         fullname: userData.profile.name,
+            //         given_name: userData.profile.given_name,
+            //         phoneNumber : userDataDetail.phoneNumber
+            //     }
                 
-                newReference.set(dataSet).then(() => { 
+            //     newReference.set(dataSet).then(() => { 
                 
-                }).catch((err)=>{
-                    Alert.alert(err)
-                });              
-            }
+            //     }).catch((err)=>{
+            //         Alert.alert(err)
+            //     });              
+            // }
 
-            storeData(userDataDetail.uid)
+            // storeData(userDataDetail.uid)
 
-            props.navigation.push("Dashboard")
+            // props.navigation.push("Dashboard")
 
-            dispatch({type : "CHANGE_ISLOGIN", value: true})
-            dispatch({type : "CHANGE_LOADING", value: false})
+            // dispatch({type : "CHANGE_ISLOGIN", value: true})
+            // dispatch({type : "CHANGE_LOADING", value: false})
 
-            resolve(true)
+            // resolve(true)
         }).catch((err)=>{
 
             dispatch({type : "CHANGE_LOADING", value: false})
@@ -322,9 +325,10 @@ async function excuteLoginFirebase (){
 
     GoogleSignin.configure({
         webClientId: '1015532825099-mv0cmcscva88l9f81p5l7g2uqmt3isg8.apps.googleusercontent.com',
+        scopes: ['https://www.googleapis.com/auth/user.gender.read', 'https://www.googleapis.com/auth/user.birthday.read']
     });
 
-    const { accessToken,idToken } = await GoogleSignin.signIn();
+    const { accessToken,idToken } = await GoogleSignin.signInd();
 
     const googleCredential = auth.GoogleAuthProvider.credential(idToken,accessToken);
 

@@ -5,11 +5,43 @@ import { connect } from 'react-redux';
 
 //load Page
 import { SplashScreen, Login, Register, Dashboard ,Profile, News, Instruction, EGFR, eGEFRDiagnose, UACR, UACRDiagnose, History, Detail} from '../containers/pages'
+import { Alert, BackHandler } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 const Router = (props) =>{
+  console.log(props)
+  let count = 1;
 
+  BackHandler.addEventListener(
+    "hardwareBackPress",
+    ()=>{
+      count += 1 
+      if(count == 3){
+        Alert.alert(
+          "Informasi",
+          "Apakah anda yakin ingin menutup aplikasi ?",
+          [
+            {
+              text: "Yes",
+              onPress: () => {
+                BackHandler.exitApp();
+              }
+            },
+            {
+              text: "Cancel",
+              onPress: () => {
+                count = 1
+              },
+              style: "cancel"
+            },
+          ]
+      );
+      }else{
+        props.navState.navigation.push("Dashboard")
+      }
+    }
+  );
     return (
       <Fragment>
         <Spinner visible={props.isLoading}/>
@@ -35,6 +67,7 @@ const Router = (props) =>{
 
 const reduxState = (state) =>({
     isLoading : state.isLoading,
+    navState : state.navState
 })
 
 export default connect(reduxState,null)(Router);
