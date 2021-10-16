@@ -13,8 +13,8 @@ import { SigninWithGoogle,SigninWithEmail, getData, CheckUser } from "../../../c
 
 const Login = (props) =>{
 
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
  
   const HandleloginAPIWithGoogle = () =>{
@@ -22,7 +22,13 @@ const Login = (props) =>{
   }
 
   const SubmitHandler = () =>{
-    if(email == null || password == null){
+    
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+    if(email == '' || password == ''){
+      if(reg.test(email) == false){
+        return Alert.alert("Email tidak valid !")
+      }
      return Alert.alert("Email dan password wajib di isi")
   }
     return props.SigniAPIWithEmail({email,password},props)
@@ -41,11 +47,11 @@ const Login = (props) =>{
           <Separator/>
           
           <View style={{alignSelf:"center", width:"70%", marginTop:20}}>
-             <TextInputClassic title="Email" name="email" onChangeText={(el) => setEmail(el)}/>
+             <TextInputClassic title="Email" name="email" onChangeText={(el) => setEmail(el.trim())}/>
           </View>
 
           <View style={{alignSelf:"center", width:"70%", marginVertical:7}}>
-             <TextInputClassic title="Password" secureTextEntry={true} name="password" onChangeText={(el) => setPassword(el)}/>
+             <TextInputClassic title="Password" secureTextEntry={true} name="password" onChangeText={(el) => setPassword(el.trim())}/>
           </View>
 
           <View style={{flexDirection:"row", justifyContent:"space-around",width:"80%", marginVertical:20, alignSelf:"center"}}>

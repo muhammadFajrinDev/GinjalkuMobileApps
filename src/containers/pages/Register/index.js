@@ -51,14 +51,14 @@ const Register = (props) =>{
   const [show, setShow] = useState(false);
   
   //Form
-  const [email, setEmail] = useState(null);
-  const [gender, setGender] = useState(null);
+  const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
   const [date, setDate] = useState(new Date());
-  const [password, setPassword] = useState(null);
-  const [fullname, setFullname] = useState(null);
-  const [birthdate, setBirthdate] = useState(null);
-  const [given_name, setGiveName] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [password, setPassword] = useState('');
+  const [fullname, setFullname] = useState('');
+  const [birthdate, setBirthdate] = useState('');
+  const [given_name, setGiveName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   const onChangeDate = (event, selectedDate) => {
@@ -76,18 +76,26 @@ const Register = (props) =>{
   }
 
   const submitRegister = () =>{
+
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
     if( 
-        fullname == null ||
-        given_name == null ||
-        birthdate == null ||
-        gender == null ||
-        email == null ||
-        password == null ||
-        phoneNumber == null ||
+        fullname == '' ||
+        given_name == '' ||
+        birthdate == '' ||
+        gender == '' ||
+        email == '' ||
+        password == '' ||
+        phoneNumber == '' ||
         toggleCheckBox == false 
       )
       {
-          Alert.alert("Mohon lengkapi semua data formulir.")
+      Alert.alert("Mohon lengkapi semua data formulir.")
+        
+      if(reg.test(email) == false){
+        return Alert.alert("Alamat email tidak valid !")
+      }
+      
       }
       else
       {
@@ -109,7 +117,7 @@ const Register = (props) =>{
             <BlueText title="Nama Lengkap"/>
           </View>
           <View style={styles.itemGroup}>
-            <TextInputClassic onChangeText={(el)=>setFullname(el)} title="Nama Lengkap"/>
+            <TextInputClassic onChangeText={(el)=>setFullname(el.trim())} title="Nama Lengkap"/>
           </View>
         </View>
 
@@ -118,7 +126,7 @@ const Register = (props) =>{
             <BlueText title="Nama Panggilan"/>
           </View>
           <View style={styles.itemGroup}>
-            <TextInputClassic onChangeText={(el)=>setGiveName(el)} title="Nama Panggilan"/>
+            <TextInputClassic onChangeText={(el)=>setGiveName(el.trim())} title="Nama Panggilan"/>
           </View>
         </View>
 
@@ -127,7 +135,7 @@ const Register = (props) =>{
             <BlueText title="No Handphone"/>
           </View>
           <View style={styles.itemGroup}>
-            <TextInputClassic keyboardType="numeric" onChangeText={(el)=>setPhoneNumber(el)} title="0859xxxxxxx"/>
+            <TextInputClassic keyboardType="numeric" onChangeText={(el)=>setPhoneNumber(el.trim())} title="0859xxxxxxx"/>
           </View>
         </View>
 
@@ -175,7 +183,7 @@ const Register = (props) =>{
             <BlueText title="Alamat Email"/>
           </View>
           <View style={styles.itemGroup}>
-            <TextInputClassic onChangeText={(el)=>setEmail(el)} title="Email"/>
+            <TextInputClassic onChangeText={(el)=>setEmail(el.trim())} title="Email"/>
           </View>
         </View>
 
@@ -184,7 +192,7 @@ const Register = (props) =>{
             <BlueText title="Password"/>
           </View>
           <View style={styles.itemGroup}>
-            <TextInputClassic onChangeText={(el)=>setPassword(el)} secureTextEntry={true} title="Password"/>
+            <TextInputClassic onChangeText={(el)=>setPassword(el.trim())} secureTextEntry={true} title="Password"/>
           </View>
         </View>
 

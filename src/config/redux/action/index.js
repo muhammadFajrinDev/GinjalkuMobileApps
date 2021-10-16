@@ -115,7 +115,7 @@ export const getNavigator = (props) => (dispatch) =>{
 
 export const CheckUser = (props) => (dispatch) =>{
     console.log("-",props)
-    removeSession("@user") 
+    // removeSession("@user") 
     dispatch({type : "CHANGE_LOADING", value: true})
 
     //check is user already register to db, if user not yet will redirect to login
@@ -286,6 +286,8 @@ export const RegisterWithEmail = (data,props) => (dispatch) => {
 
             let userData = userCredential.additionalUserInfo;
             let getUid = userCredential.user._user;
+            
+            data.password = null;
 
             if(userData.isNewUser){
             

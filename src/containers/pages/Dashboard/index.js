@@ -46,7 +46,7 @@ const Dashboard = (props) =>{
         {/* Header */}
         {
             props.isLogin ? (
-                 <HeaderDashboard onPress={()=> props.navigation.push("Profile")} title={"Hai "+props.dataUser.fullname}/>
+                 <HeaderDashboard onPress={()=> props.navigation.push("Profile")} title={"Hai "+props.dataUser.given_name}/>
             ) : (
                 <HeaderBackBtn title="Selamat Datang..." page="Login" navigation={props.navigation}/>
             )

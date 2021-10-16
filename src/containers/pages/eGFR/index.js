@@ -45,11 +45,11 @@ const EGFR = (props) =>{
     const [activeGender, setActiveGender] = useState(null);
     const [activeRace, setActiveRace] = useState(null);
 
-    const [creatinine, setCreatinine] = useState(null)
-    const [gender, setGender] = useState(null)
-    const [weight, setWeight] = useState(null)
-    const [race, setRace] = useState(null);
-    const [age, setAge] = useState(null)
+    const [creatinine, setCreatinine] = useState('')
+    const [gender, setGender] = useState('')
+    const [weight, setWeight] = useState('')
+    const [race, setRace] = useState('');
+    const [age, setAge] = useState('')
 
     useEffect(()=>{
         const {creatinine, gender, weight, race , age} = props.dataEGFR;
@@ -79,12 +79,12 @@ const EGFR = (props) =>{
     const submitEGFR = () =>{
 
       if(!props.isLogin){
-          if(creatinine == null || weight == null || race == null || gender == null ||  age == null){
+          if(creatinine == '' || weight == '' || race == '' || gender == '' ||  age == ''){
             return Alert.alert("Mohon lengkapi formulir.")
           }
         props.SaveEGFRToReduce(props,{ creatinine, weight, race, gender, age })
       }else{
-        if(creatinine == null || weight == null || race == null){
+        if(creatinine == '' || weight == '' || race == ''){
             return Alert.alert("Mohon lengkapi formulir.")
         }
         props.SaveEGFRToReduce(props,{ creatinine, weight, race})
@@ -102,7 +102,7 @@ const EGFR = (props) =>{
             <BlueText title="Serum Creatinine"/>
           </View>
           <View style={styles.itemGroup}>
-            <TextInputClassic value={creatinine} keyboardType="numeric" onChangeText={(el)=>setCreatinine(el)} title="mg/dL"/>
+            <TextInputClassic value={creatinine} keyboardType="numeric" onChangeText={(el)=>setCreatinine(el.trim())} title="mg/dL"/>
           </View>
         </View>
 
@@ -114,7 +114,7 @@ const EGFR = (props) =>{
                   <BlueText title="Usia"/>
                 </View>
                 <View style={styles.itemGroup}>
-                  <TextInputClassic value={age} keyboardType="numeric" onChangeText={(el)=>setAge(el)} title="Tahun"/>
+                  <TextInputClassic value={age} keyboardType="numeric" onChangeText={(el)=>setAge(el.trim())} title="Tahun"/>
                 </View>
               </View>
               
@@ -148,7 +148,7 @@ const EGFR = (props) =>{
             <BlueText title="Berat Badan"/>
           </View>
           <View style={styles.itemGroup}>
-            <TextInputClassic value={weight} keyboardType="numeric" onChangeText={(el)=>setWeight(el)} title="Kg"/>
+            <TextInputClassic value={weight} keyboardType="numeric" onChangeText={(el)=>setWeight(el.trim())} title="Kg"/>
           </View>
         </View>
 

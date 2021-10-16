@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
 const UACR = (props) =>{ 
 
     const [UACR, setUACR] = useState();
-    const [resultEGFR, setResultEGFR] = useState(null);
+    const [resultEGFR, setResultEGFR] = useState('');
 
     useEffect(()=>{
         setUACR(props.dataEGFR.UACR)
     },[])
 
     const DiagnoseUACR = () => {
-        if(UACR == null){
+        if(UACR == ''){
             return  Alert.alert("Mohon lengkapi semua formulir.")
         }
 
@@ -131,7 +131,7 @@ const UACR = (props) =>{
                     <BlueText title="UACR"/>
                 </View>
                 <View style={{margin:5}}>
-                    <TextInputClassic value={UACR} keyboardType="numeric" onChangeText={(el)=>setUACR(el)} title="mg/g"/>
+                    <TextInputClassic value={UACR} keyboardType="numeric" onChangeText={(el)=>setUACR(el.trim())} title="mg/g"/>
                 </View>
             </View>
         </View>

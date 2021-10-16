@@ -16,30 +16,30 @@ const Router = (props) =>{
   BackHandler.addEventListener(
     "hardwareBackPress",
     ()=>{
-      count += 1 
       if(count == 3){
-        Alert.alert(
-          "Informasi",
-          "Apakah anda yakin ingin menutup aplikasi ?",
-          [
-            {
-              text: "Yes",
-              onPress: () => {
-                BackHandler.exitApp();
-              }
-            },
-            {
-              text: "Cancel",
-              onPress: () => {
-                count = 1
+          return Alert.alert(
+            "Informasi",
+            "Apakah anda yakin ingin menutup aplikasi ?",
+            [
+              {
+                text: "Yes",
+                onPress: () => {
+                 return BackHandler.exitApp();
+                }
               },
-              style: "cancel"
-            },
-          ]
-      );
+              {
+                text: "Cancel",
+                onPress: () => {
+                 return count = 1
+                },
+                style: "cancel"
+              },
+            ]
+        );             
       }else{
-        props.navState.navigation.push("Dashboard")
+        return props.navState.navigation.push("Dashboard")
       }
+      count += 1 
     }
   );
     return (
