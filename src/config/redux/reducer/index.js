@@ -1,9 +1,9 @@
 const initialState = {
     isLogin : false,
     isLoading : false,
-    dataUser  :{},
-    dataEGFR : {},
-    navState : {}
+    dataUser  :[],
+    dataEGFR : [],
+    navState : []
   }
   console.log(initialState)
   const reducer = (state=initialState ,action) =>{

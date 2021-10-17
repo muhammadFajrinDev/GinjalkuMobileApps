@@ -1,12 +1,14 @@
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import blackspace_back from '../../../assets/thumb/backspace_back.png'
 import HeaderBackBtn from '../../../components/atoms/Header/header-backbtn';
+import { CheckUser, removeProfile } from '../../../config/redux/action';
+import blackspace_back from '../../../assets/thumb/backspace_back.png'
 import ProfilePhoto from '../../../assets/thumb/profile-k.png';
 import { ScrollView } from 'react-native-gesture-handler';
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import EditPanel from '../../../assets/thumb/mode.png';
+import moment from 'moment';
 
 const styles = StyleSheet.create({
   card:{
@@ -36,10 +38,39 @@ const Profile = (props) =>{
   const [birthdate, setBirthdate] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   
+  const Edit = () => {
+    props.navigation.push("EditProfile")
+  }
+
+  const logout = () =>{
+  
+  Alert.alert(
+      "Konfirmasi",
+      "Apakah anda yakin ?",
+      [
+      {
+          text: "Ya",
+          onPress: () => {
+            props.removeProfile()
+            props.CheckUser(props)
+            
+          }
+      },
+      {
+          text: "Tidak",
+          onPress: () => {},
+          style: "cancel"
+      },
+      ]
+  );
+    
+  }
+    
   useEffect(()=>{
+    
     const DataUser = props.dataUser;
     let key = Object.keys(DataUser)
-    console.log(key)
+
     key.map(key =>{
       if(key == 'fullname'){
         setFullname(DataUser.fullname)
@@ -71,9 +102,10 @@ const Profile = (props) =>{
         <View style={styles.card}>
               <View>
                 <View style={{flexDirection:"row", marginBottom:10}}>
-                  <TouchableOpacity>
-                      <Image source={EditPanel} style={{position:"absolute",left:300,}}/>
+                  <TouchableOpacity style={{position:"absolute",left:300}} onPress={()=>Edit()}>
+                      <Image source={EditPanel}/>
                   </TouchableOpacity>
+
                   {
                     photo == '' ? (
                       <Image source={ProfilePhoto} style={styles.image}/>
@@ -86,7 +118,7 @@ const Profile = (props) =>{
                       birthdate != '' ? (
                       <Fragment>
                         <Text style={styles.txtImage}>{fullname}</Text>
-                        <Text style={{color:"#2A2B3D", fontSize:18 }}>{birthdate}</Text>
+                        <Text style={{color:"#2A2B3D", fontSize:18 }}>{moment().diff(moment(birthdate, "DD-MM-YYYY"), 'years')} Tahun</Text>
                       </Fragment>
                       ):(
                         <Fragment>
@@ -152,9 +184,6 @@ const Profile = (props) =>{
         
         <View style={styles.card}>
               <View>
-              <TouchableOpacity>
-                <Image source={EditPanel} style={{position:"absolute",left:300,}}/>
-              </TouchableOpacity>
                 <View style={styles.conText}>
                       <Text style={styles.editText}>Alamat Email</Text>
                       <Text style={{color:"#2A2B3D", fontSize:17, marginVertical:3 }}>{email}</Text>
@@ -173,14 +202,25 @@ const Profile = (props) =>{
           <Image source={blackspace_back}/>
        </View>
        </TouchableOpacity>
+       <TouchableOpacity onPress={()=> logout()}>
+          <View style={styles.card}>
+            <Text style={{fontSize:16,color:"#2A2B3D", fontWeight:"bold",paddingTop:2}}>Keluar</Text>
+            <Image source={blackspace_back}/>
+       </View>
+       </TouchableOpacity>
        </ScrollView>
      </View>
   ) 
 }
 
 const reduxState = (state) =>({
-  dataUser : state.dataUser
+  dataUser : state.dataUser,
 })
 
-export default connect(reduxState,null)(Profile);
+const reduxDispatch = (dispatch) => ({
+  CheckUser : (props) => dispatch(CheckUser(props)),
+  removeProfile: (props) => dispatch(removeProfile(props))
+})
+
+export default connect(reduxState,reduxDispatch)(Profile);
 

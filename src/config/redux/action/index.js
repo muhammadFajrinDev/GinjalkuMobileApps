@@ -109,12 +109,65 @@ export const getHistoryDetail = (id) => async (dispatch) =>{
 });
 }
 
+export const EditProfileFunction = (data,props) => (dispatch) =>{
+    console.log(data)
+    dispatch({type : "CHANGE_LOADING", value: true})
+
+    getData("@user").then((userData)=>{
+        database().ref('/users/' + userData ).once('value')
+        .then(snapshot => {
+        
+        //get Data User on login
+        Object.keys(snapshot.val()).map(key =>{
+            console.log( snapshot.val()[key])
+            database()
+            .ref('/users/' + userData + '/' + key)
+            .update(data)
+            .then(() => {
+
+                
+                dispatch({type : "CHANGE_LOADING", value: false})
+                dispatch({type : "CHANGE_USER", value: data})
+               
+                props.navigation.push("Profile")
+                Alert.alert("Berhasil Edit")
+        
+            }).catch((Err)=>{
+                Alert.alert(Err)
+            });
+
+        });
+        
+        }).catch((Err)=>{
+            Alert.alert(Err)
+        });
+    });
+    
+}
+
 export const getNavigator = (props) => (dispatch) =>{
     dispatch({type : "CHANGE_NAV", value: props})
 }
 
+export const removeProfile = () => (dispatch) => {
+    dispatch({type : "CHANGE_LOADING", value: true})
+    new Promise ((resolve,reject)=>{
+        removeSession("@user").then((res)=>{
+            if(res){
+                resolve(res)
+                dispatch({type : "CHANGE_USER", value: []})
+                dispatch({type : "CHANGE_LOADING", value: false})
+            }
+        }).catch((err)=>{
+            reject(err)
+            Alert.alert("Gagal Keluar aplikasi")
+            dispatch({type : "CHANGE_LOADING", value: false})
+        })
+    });
+}
+
 export const CheckUser = (props) => (dispatch) =>{
-    // removeSession("@user") 
+
     dispatch({type : "CHANGE_LOADING", value: true})
     
     //check is user already register to db, if user not yet will redirect to login
@@ -378,4 +431,4 @@ const removeSession = async (key) =>{
     catch(exception) {
         return false;
     }
-}
+  }

@@ -8,9 +8,9 @@ import Detail from "./DetailCheck";
 import Dashboard from "./Dashboard";
 import History from "./HistoryCheck";
 import Instruction from "./Instruction";
+import EditProfile from "./EditProfile";
+import UACRDiagnose from "./UACRDiagnose";
 import SplashScreen from "./splash-screen";
 import eGEFRDiagnose from "./eGEFRDiagnose";
-import UACRDiagnose from "./UACRDiagnose";
-
 export {SplashScreen,Login,Register,Dashboard,Profile,News,Instruction,
-        EGFR,eGEFRDiagnose,UACR,UACRDiagnose, Detail,History}
+        EGFR,eGEFRDiagnose,UACR,UACRDiagnose, Detail,History, EditProfile}

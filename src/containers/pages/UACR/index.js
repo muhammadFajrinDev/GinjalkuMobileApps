@@ -88,10 +88,9 @@ const UACR = (props) =>{
     }
     
     useEffect(()=>{
-        setResultEGFR(props.dataEGFR.EGFR)
-        
+        setResultEGFR(props.dataEGFR)
     },[])
-
+    console.log(resultEGFR)
   return (  
      <Fragment>
         <ScrollView> 
@@ -104,7 +103,10 @@ const UACR = (props) =>{
                     Hasil Pemeriksaan :
                 </Text>
                 <Text style={styles.contentInformation}>
-                    {resultEGFR}
+                    Nilai eGFR anda {resultEGFR.resultEGFRCal} 
+                </Text>
+                <Text style={styles.contentInformation}>
+                    Stadium {resultEGFR.EGFR}
                 </Text>
             </View>
 

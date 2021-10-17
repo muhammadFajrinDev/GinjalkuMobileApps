@@ -75,8 +75,10 @@ const gfr_interpretation = (gfr) => {
 const DiagnoseEGFR = (props) =>{
 
     const [resultEGFR, setResultEGFR] = useState(null)
-  
+    const [calculate_egfr_save, setCalculate_egfr_save] = useState('')
+
     let EGFReducer = props.dataEGFR;
+
 
     const SaveCheck = () => {
       
@@ -110,6 +112,9 @@ const DiagnoseEGFR = (props) =>{
                     text: "Ya",
                     onPress: () => {
                         //store to DB
+                        //get result calculate egfr
+                        EGFReducer.resultEGFRCal = calculate_egfr_save;
+
                         props.saveToDBEGFR(props,EGFReducer)
                     }
                   },
@@ -126,14 +131,16 @@ const DiagnoseEGFR = (props) =>{
     const toUACR = () =>{
 
         EGFReducer.EGFR = resultEGFR
+        EGFReducer.resultEGFRCal = calculate_egfr_save;
 
         props.sendToUACR(props,EGFReducer)
     }
     
     useEffect(()=>{
-        let resultEGFR = gfr_interpretation(calculate_egfr(EGFReducer.creatinine, EGFReducer.gender, EGFReducer.age, EGFReducer.race))
-        console.log("+++ calculate EGFR",calculate_egfr(EGFReducer.creatinine, EGFReducer.gender, EGFReducer.age, EGFReducer.race))
-
+        let calculate_egfr_res = calculate_egfr(EGFReducer.creatinine, EGFReducer.gender, EGFReducer.age, EGFReducer.race)
+        let resultEGFR = gfr_interpretation(calculate_egfr_res)
+        
+        setCalculate_egfr_save(calculate_egfr_res.toFixed(2))
         setResultEGFR(resultEGFR)
     },[])
 
@@ -146,10 +153,14 @@ const DiagnoseEGFR = (props) =>{
 
             <View style={styles.informationLayout}>
                 <Text style={styles.contentInformation}>
-                    Hasil Pemeriksaan :
+                    Hasil Pemeriksaan : 
                 </Text>
                 <Text style={styles.contentInformation}>
-                    {resultEGFR}
+                    Nilai eGFR anda {calculate_egfr_save} 
+                </Text>
+                <Text style={styles.contentInformation}>
+
+                    Stadium {resultEGFR}
                 </Text>
             </View>
 

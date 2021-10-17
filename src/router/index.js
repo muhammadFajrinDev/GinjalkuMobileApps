@@ -4,7 +4,7 @@ import React,  { Fragment }  from 'react';
 import { connect } from 'react-redux';
 
 //load Page
-import { SplashScreen, Login, Register, Dashboard ,Profile, News, Instruction, EGFR, eGEFRDiagnose, UACR, UACRDiagnose, History, Detail} from '../containers/pages'
+import { SplashScreen, Login, Register, Dashboard ,Profile, News, Instruction, EGFR, eGEFRDiagnose, UACR, UACRDiagnose, History, Detail, EditProfile} from '../containers/pages'
 import { Alert, BackHandler } from 'react-native';
 
 const Stack = createNativeStackNavigator();
@@ -18,25 +18,7 @@ const Router = (props) =>{
     ()=>{
       count += 1 
       if(count == 3){
-          return Alert.alert(
-            "Informasi",
-            "Apakah anda yakin ingin menutup aplikasi ?",
-            [
-              {
-                text: "Yes",
-                onPress: () => {
-                 return BackHandler.exitApp();
-                }
-              },
-              {
-                text: "Cancel",
-                onPress: () => {
-                 return count = 1
-                },
-                style: "cancel"
-              },
-            ]
-        );             
+          return BackHandler.exitApp();           
       }else{
         return props.navState.navigation.push("Dashboard")
       }
@@ -60,6 +42,7 @@ const Router = (props) =>{
               <Stack.Screen name="UACRDiagnose" options={{headerShown: false}} component={UACRDiagnose}/> 
               <Stack.Screen name="History" options={{headerShown: false}} component={History}/>  
               <Stack.Screen name="Detail" options={{headerShown: false}} component={Detail}/>  
+              <Stack.Screen name="EditProfile" options={{headerShown: false}} component={EditProfile}/>  
         </Stack.Navigator>
       </Fragment>
     ) 

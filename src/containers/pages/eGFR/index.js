@@ -7,6 +7,7 @@ import { saveEGFR } from '../../../config/redux/action';
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { ScrollView } from 'react-native-gesture-handler';
+import moment from 'moment';
 
 const styleSelect = StyleSheet.create({
     selectActive :{ 
@@ -46,17 +47,31 @@ const EGFR = (props) =>{
 
     const [creatinine, setCreatinine] = useState('')
     const [gender, setGender] = useState('')
-    const [weight, setWeight] = useState('')
     const [race, setRace] = useState('');
     const [age, setAge] = useState('')
 
     useEffect(()=>{
-        const {creatinine, gender, weight, race , age} = props.dataEGFR;
+
+        const {creatinine, race} = props.dataEGFR;
+        const dataUser = props.dataUser;
+        let getAge = '';
+
+        if(dataUser.birthdate){
+           getAge = moment().diff(moment(dataUser.birthdate, "DD-MM-YYYY"), 'years')
+        }
         
         setCreatinine(creatinine)
-        setWeight(weight)
-        setAge(age)
-
+        setAge(getAge.toString())
+        setRace(race)
+       
+        if(race){
+          setActiveRace(race == 'Africa' ? 1 : 2)
+        }
+        if(dataUser.gender){
+          setActiveGender(dataUser.gender == 'Male' ? 1 : 2)
+        }
+        setGender(dataUser.gender)
+        
     },[])
 
     const activeGenderCheck = (id) =>{
@@ -77,18 +92,11 @@ const EGFR = (props) =>{
 
     const submitEGFR = () =>{
 
-      if(!props.isLogin){
-          if(creatinine == '' || weight == '' || race == '' || gender == '' ||  age == ''){
-            return Alert.alert("Mohon lengkapi formulir.")
-          }
-        props.SaveEGFRToReduce(props,{ creatinine, weight, race, gender, age })
-      }else{
-        if(creatinine == '' || weight == '' || race == ''){
-            return Alert.alert("Mohon lengkapi formulir.")
-        }
-        props.SaveEGFRToReduce(props,{ creatinine, weight, race})
+      if(creatinine == '' || race == '' || gender == '' ||  age == ''){
+          return Alert.alert("Mohon lengkapi formulir.")
       }
-
+      
+      props.SaveEGFRToReduce(props,{ creatinine, race, gender, age })
     }
 
   return (  
@@ -103,21 +111,8 @@ const EGFR = (props) =>{
           <View style={styles.itemGroup}>
             <TextInputClassic value={creatinine} keyboardType="numeric" onChangeText={(el)=>setCreatinine(el.trim())} title="mg/dL"/>
           </View>
-        </View>
-
-        {
-          !props.isLogin && (
-            <Fragment>
-              <View style={{width:"60%"}}>
-                <View style={styles.itemGroup}>
-                  <BlueText title="Usia"/>
-                </View>
-                <View style={styles.itemGroup}>
-                  <TextInputClassic value={age} keyboardType="numeric" onChangeText={(el)=>setAge(el.trim())} title="Tahun"/>
-                </View>
-              </View>
-              
-              <View style={styles.inputGroup}>
+        </View>           
+        <View style={styles.inputGroup}>
                 <View style={styles.itemGroup}>
                   <BlueText title="Jenis Kelamin"/>
                 </View>
@@ -134,23 +129,16 @@ const EGFR = (props) =>{
                       <Text style={activeGender == 2 ? styleSelect.textActive : styleSelect.textNoActive}>Wanita</Text>
                     </View>
                   </TouchableOpacity>
-
-
-                </View>
               </View>
-            </Fragment>
-          )
-        }
-
-        <View style={{width:"60%"}}>
-          <View style={styles.itemGroup}>
-            <BlueText title="Berat Badan"/>
-          </View>
-          <View style={styles.itemGroup}>
-            <TextInputClassic value={weight} keyboardType="numeric" onChangeText={(el)=>setWeight(el.trim())} title="Kg"/>
-          </View>
         </View>
-
+        <View style={{width:"60%"}}>
+            <View style={styles.itemGroup}>
+                <BlueText title="Usia"/>
+            </View>
+            <View style={styles.itemGroup}>
+                  <TextInputClassic value={age} keyboardType="numeric" onChangeText={(el)=>setAge(el.trim())} title="Tahun"/>
+            </View>
+        </View>
         <View style={styles.inputGroup}>
           <View style={styles.itemGroup}>
             <BlueText title="Ras atau Suku"/>
@@ -187,8 +175,8 @@ const reduxDispatch = (dispatch) => ({
 
 const reduxState = (state) =>({
   isLogin : state.isLogin,
-  dataEGFR : state.dataEGFR
-  
+  dataEGFR : state.dataEGFR,
+  dataUser : state.dataUser 
 })
 
 

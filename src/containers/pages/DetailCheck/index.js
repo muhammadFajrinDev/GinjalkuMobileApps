@@ -19,21 +19,6 @@ const styles = StyleSheet.create({
     paragraf : { marginBottom: 15 }
 });
 
-
-const getAge = (dateString) =>
-{
-    var today = new Date();
-    var birthDate = new Date(dateString);
-  
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
-    {
-        age--;
-    }
-    return age;
-}
-
 const Detail = (props) =>{
 
     const [detail, setDetail] = useState([]);
@@ -63,9 +48,9 @@ const Detail = (props) =>{
             <View style={styles.paragraf}>
                 <Text style={styles.texttitle}>Rekap Data</Text>
                 <Text style={styles.content}> {'\u2022'} Usia : {detail.age} Tahun </Text>
-                <Text style={styles.content}> {'\u2022'} Berat Badan : {detail.weight} Kg </Text>
                 <Text style={styles.content}> {'\u2022'} Ras : {detail.race == 'Non African' ? 'Lainnya' : 'African'}  </Text>
                 <Text style={styles.content}> {'\u2022'} Serum Creatinine : {detail.creatinine} mg/dL</Text>
+                <Text style={styles.content}> {'\u2022'} Nilai eGFR : {detail.resultEGFRCal}</Text>
                 {
                     detail.UACR && (
                         <Text style={styles.content}> {'\u2022'} UACR : {detail.UACR} mg/g </Text>

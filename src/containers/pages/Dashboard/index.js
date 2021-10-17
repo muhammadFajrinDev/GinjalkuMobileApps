@@ -13,28 +13,32 @@ import HeaderBackBtn from '../../../components/atoms/Header/header-backbtn';
 const Dashboard = (props) =>{
 
     const checkUp = () =>{
-    let key = Object.keys(props.dataUser)
-        if(key.includes("birthdate") == false || key.includes("gender") == false){
-            Alert.alert(
-                "Info Penting",
-                "Mohon update profil anda sebelum melakukan pemeriksaan ",
-                [
-                  {
-                    text: "Yes",
-                    onPress: () => {
-                        return props.navigation.push("Profile")
-                    }
-                  },
-                  {
-                    text: "Cancel",
-                    onPress: () => {},
-                    style: "cancel"
-                  },
-                ]
-            );
-        }else{
-            props.navigation.push("eGFR")
-        }   
+    if(props.dataUser.length != 0){
+        let key = Object.keys(props.dataUser)
+            if(key.includes("birthdate") == false || key.includes("gender") == false){
+                Alert.alert(
+                    "Info Penting",
+                    "Mohon update profil anda sebelum melakukan pemeriksaan ",
+                    [
+                      {
+                        text: "Yes",
+                        onPress: () => {
+                            return props.navigation.push("Profile")
+                        }
+                      },
+                      {
+                        text: "Cancel",
+                        onPress: () => {},
+                        style: "cancel"
+                      },
+                    ]
+                );
+            }else{
+                props.navigation.push("eGFR")
+            }   
+    }else{
+        props.navigation.push("eGFR")
+    }
     }
 
     const styles = StyleSheet.create({
