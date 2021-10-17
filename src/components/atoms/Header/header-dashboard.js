@@ -8,7 +8,7 @@ import { Text, View, StyleSheet, ImageBackground, Image, TouchableOpacity } from
 const styles = StyleSheet.create({
   ImgBackground :{ width: "100%", height:165 },
   containerText: { width:"85%",alignItems:"center", alignSelf:"center",flexDirection:"row", justifyContent:"space-between", height:120 },
-  headerTitle : { fontSize:23, fontWeight:"bold", color:"#FFFFFF" },
+  headerTitle : { fontSize:23, fontWeight:"bold", color:"#FFFFFF",textTransform:"capitalize" },
   headerLogo : { width:35,height:35 }
 });
 

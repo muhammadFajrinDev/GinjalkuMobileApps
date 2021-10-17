@@ -3,13 +3,13 @@ import { Fragment } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 
 const styles = StyleSheet.create({
-    card : { width:300,padding:15, height:330,
+    card : { width:340,padding:15, height:330,
             backgroundColor:"#FFFFFF", marginHorizontal:10, borderRadius:12,
             shadowColor: '#000',
             shadowOffset: { width: 1, height: 1 }, shadowOpacity:  0.4,
             shadowRadius: 3, elevation: 5 },
-    image : { width:270,height:230,borderRadius:12 },
-    title : { color:"#2A2B3D",height:37,marginTop:10,fontSize:14,fontWeight:"bold" },
+    image : { width:310,height:230,borderRadius:12,alignSelf:"center" },
+    title : { color:"#2A2B3D",height:37,marginTop:10,fontSize:17,fontWeight:"bold" },
     contDesc : { flexDirection:"row", justifyContent:"space-between", height:30 },
     description : { alignSelf:"center", color:"#B7B7B7" }
 });

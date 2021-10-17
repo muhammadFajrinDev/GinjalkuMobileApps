@@ -24,7 +24,7 @@ const Menu = (props) =>{
       });
 
     const GoWa = () => {
-        Linking.openURL('whatsapp://send?text=Hallo Customer Services&phone=081330334716').then().catch((Error)=>{
+        Linking.openURL('whatsapp://send?text=Hallo Customer Services&phone=6281330334716').then().catch((Error)=>{
             Alert.alert(Error)
         });
     }

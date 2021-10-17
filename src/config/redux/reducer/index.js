@@ -5,7 +5,7 @@ const initialState = {
     dataEGFR : {},
     navState : {}
   }
-
+  console.log(initialState)
   const reducer = (state=initialState ,action) =>{
     if(action.type === 'CHANGE_ISLOGIN'){
       return {

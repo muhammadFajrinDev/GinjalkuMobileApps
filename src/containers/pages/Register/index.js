@@ -62,7 +62,7 @@ const Register = (props) =>{
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   const onChangeDate = (event, selectedDate) => {
-    setBirthdate(Moment(selectedDate).format('DD/MM/YYYY'))
+    setBirthdate(Moment(selectedDate).format('DD-MM-YYYY'))
     setDate(selectedDate)
     setShow(false)
   };
@@ -152,7 +152,7 @@ const Register = (props) =>{
             />
             )}
             <TouchableOpacity onPress={()=>setShow(true)}>
-                <TextInputClassic editable={false} value={birthdate} read title="DD/MM/YYYY"/>
+                <TextInputClassic editable={false} value={birthdate} read title="DD-MM-YYYY"/>
             </TouchableOpacity>  
           </View>
         </View>

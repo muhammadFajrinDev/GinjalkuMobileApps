@@ -16,6 +16,7 @@ const Router = (props) =>{
   BackHandler.addEventListener(
     "hardwareBackPress",
     ()=>{
+      count += 1 
       if(count == 3){
           return Alert.alert(
             "Informasi",
@@ -39,7 +40,6 @@ const Router = (props) =>{
       }else{
         return props.navState.navigation.push("Dashboard")
       }
-      count += 1 
     }
   );
 

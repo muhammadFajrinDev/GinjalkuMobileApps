@@ -114,17 +114,17 @@ export const getNavigator = (props) => (dispatch) =>{
 }
 
 export const CheckUser = (props) => (dispatch) =>{
-    console.log("-",props)
     // removeSession("@user") 
     dispatch({type : "CHANGE_LOADING", value: true})
-
+    
     //check is user already register to db, if user not yet will redirect to login
-    getData("@user").then((idUser)=>{
-      
-        database().ref('/users/' + idUser ).once('value')
+    getData("@user").then((userData)=>{
+        
+        database().ref('/users/' + userData ).once('value')
         .then(snapshot => {
-            
+        
             if(!snapshot.val()){
+
                 if(removeSession("@user")){
                     props.navigation.push("Login")
                     dispatch({type : "CHANGE_ISLOGIN", value: false})
@@ -201,41 +201,54 @@ export const addedResultUACR = (props,data) => async (dispatch) => {
 }
 
 export const SigninWithGoogle = (props) => async (dispatch) => {
-    console.log("ok")
+    
     dispatch({type : "CHANGE_LOADING", value: true})
     return new Promise ((resolve,reject)=>{
         excuteLoginFirebase().then((userCredential)=>{
-            console.log(userCredential)
-            // let userData = userCredential.additionalUserInfo;
-            // let userDataDetail = userCredential.user._user;
+
+            let userData = userCredential.additionalUserInfo;
+            let userDataDetail = userCredential.user._user;
+   
+            if(userData.isNewUser){
+
+                const newReference = database().ref('/users/' + userDataDetail.uid).push();
+
+                let dataSet = {
+                    birthdate: null,
+                    email: userData.profile.email,
+                    gender:null,
+                    fullname: userData.profile.name,
+                    given_name: userData.profile.given_name,
+                    phoneNumber : userDataDetail.phoneNumber,
+                    photosUrl : userData.profile.picture
+                }
+                
+                newReference.set(dataSet).then((RES) => { 
+                }).catch((err)=>{
+                    Alert.alert(err)
+                });              
+                
+                storeData(userDataDetail.uid).then(()=>{
+                        //this function is for redirect to dashboard and save data user after siginin
+                        props.navigation.push("SplashScreen")
+                }).catch((err)=>{
+                    Alert.alert(err)
+                })
+                                
+            }else{
+                storeData(userDataDetail.uid).then(()=>{
+       
+                        //this function is for redirect to dashboard and save data user after siginin
+                        props.navigation.push("SplashScreen")
+                }).catch((err)=>{
+                    Alert.alert(err)
+                })
+            }
             
-            // if(userData.isNewUser){
-            //     const newReference = database().ref('/users').push();
+            dispatch({type : "CHANGE_ISLOGIN", value: true})
+            dispatch({type : "CHANGE_LOADING", value: false})
 
-            //     let dataSet = {
-            //         birthdate: null,
-            //         email: userData.profile.email,
-            //         gender:null,
-            //         fullname: userData.profile.name,
-            //         given_name: userData.profile.given_name,
-            //         phoneNumber : userDataDetail.phoneNumber
-            //     }
-                
-            //     newReference.set(dataSet).then(() => { 
-                
-            //     }).catch((err)=>{
-            //         Alert.alert(err)
-            //     });              
-            // }
-
-            // storeData(userDataDetail.uid)
-
-            // props.navigation.push("Dashboard")
-
-            // dispatch({type : "CHANGE_ISLOGIN", value: true})
-            // dispatch({type : "CHANGE_LOADING", value: false})
-
-            // resolve(true)
+            resolve(true)
         }).catch((err)=>{
 
             dispatch({type : "CHANGE_LOADING", value: false})
@@ -365,17 +378,4 @@ const removeSession = async (key) =>{
     catch(exception) {
         return false;
     }
-}
-
-const getAge = (dateString) =>
-{
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
-    {
-        age--;
-    }
-    return age;
 }

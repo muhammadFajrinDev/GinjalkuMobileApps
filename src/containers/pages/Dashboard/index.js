@@ -1,6 +1,6 @@
 import HeaderDashboard from '../../../components/atoms/Header/header-dashboard';
 import { Alert, Image, Text, SafeAreaView, View, ScrollView,StyleSheet, TouchableOpacity } from 'react-native';
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import Menu from '../../../components/atoms/Menu';
@@ -11,7 +11,32 @@ import ButtonClassic from '../../../components/atoms/Button/button-classic';
 import HeaderBackBtn from '../../../components/atoms/Header/header-backbtn';
 
 const Dashboard = (props) =>{
-  
+
+    const checkUp = () =>{
+    let key = Object.keys(props.dataUser)
+        if(key.includes("birthdate") == false || key.includes("gender") == false){
+            Alert.alert(
+                "Info Penting",
+                "Mohon update profil anda sebelum melakukan pemeriksaan ",
+                [
+                  {
+                    text: "Yes",
+                    onPress: () => {
+                        return props.navigation.push("Profile")
+                    }
+                  },
+                  {
+                    text: "Cancel",
+                    onPress: () => {},
+                    style: "cancel"
+                  },
+                ]
+            );
+        }else{
+            props.navigation.push("eGFR")
+        }   
+    }
+
     const styles = StyleSheet.create({
         cardInformation: {
             height:210, width:"90%", alignSelf:"center", 
@@ -69,7 +94,7 @@ const Dashboard = (props) =>{
                 </View>
 
                 <View style={styles.containerCheckNow}>          
-                        <ButtonClassic title="Periksa Sekarang" onPress={()=> props.navigation.push("eGFR")}/>
+                        <ButtonClassic title="Periksa Sekarang" onPress={()=> checkUp()}/>
                 </View>
                 <Image source={Organ} style={styles.imageOrgan}/> 
                      
