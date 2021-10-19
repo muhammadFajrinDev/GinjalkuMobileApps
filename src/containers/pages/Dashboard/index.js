@@ -8,7 +8,7 @@ import Organ from '../../../assets/thumb/organ.png';
 import BlueText from '../../../components/atoms/Bluetext';
 import CardNews from '../../../components/atoms/CardNews';
 import ButtonClassic from '../../../components/atoms/Button/button-classic';
-import HeaderBackBtn from '../../../components/atoms/Header/header-backbtn';
+
 
 const Dashboard = (props) =>{
 
@@ -77,7 +77,7 @@ const Dashboard = (props) =>{
             props.isLogin ? (
                  <HeaderDashboard onPress={()=> props.navigation.push("Profile")} title={"Hai "+props.dataUser.given_name}/>
             ) : (
-                <HeaderBackBtn title="Selamat Datang..." page="Login" navigation={props.navigation}/>
+                <HeaderDashboard onPress={()=> props.navigation.push("Login")} title={"Selamat Datang"}/>
             )
         }
 

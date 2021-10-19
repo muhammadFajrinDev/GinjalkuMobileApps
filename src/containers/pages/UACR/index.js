@@ -27,14 +27,17 @@ const styles = StyleSheet.create({
 
 const UACR = (props) =>{ 
 
-    const [UACR, setUACR] = useState();
+    const [UACR, setUACR] = useState('');
     const [resultEGFR, setResultEGFR] = useState('');
 
     useEffect(()=>{
-        setUACR(props.dataEGFR.UACR)
+        if(props.dataEGFR.UACR){
+            setUACR(props.dataEGFR.UACR)
+        }
     },[])
 
     const DiagnoseUACR = () => {
+
         if(UACR == ''){
             return  Alert.alert("Mohon lengkapi semua formulir.")
         }

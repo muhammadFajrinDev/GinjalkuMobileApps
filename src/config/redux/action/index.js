@@ -30,7 +30,7 @@ export const saveEGFR = (props,data) => (dispatch) => {
                     dispatch({type : "CHANGE_EGFR", value: Combine})
                     dispatch({type : "CHANGE_LOADING", value: false})
                     props.navigation.push("eGFRDiagnose")
-                },2000)
+                },500)
 
             }).catch((Err)=>{
                 Alert.alert(Err)
@@ -40,7 +40,7 @@ export const saveEGFR = (props,data) => (dispatch) => {
             setTimeout(()=>{
                 dispatch({type : "CHANGE_LOADING", value: false})
                 props.navigation.push("eGFRDiagnose")
-            },2000)
+            },500)
         }
 
     }).catch((err)=>{
@@ -179,7 +179,7 @@ export const CheckUser = (props) => (dispatch) =>{
             if(!snapshot.val()){
 
                 if(removeSession("@user")){
-                    props.navigation.push("Login")
+                    props.navigation.push("Dashboard")
                     dispatch({type : "CHANGE_ISLOGIN", value: false})
                 }
             }else{
@@ -240,7 +240,7 @@ export const addedResult = (props,data) => async (dispatch) => {
         dispatch({type : "CHANGE_LOADING", value: false})
         dispatch({type : "CHANGE_EGFR", value: data})
         props.navigation.push("UACR")
-    },2000)
+    },500)
 }
 
 export const addedResultUACR = (props,data) => async (dispatch) => {
@@ -250,7 +250,7 @@ export const addedResultUACR = (props,data) => async (dispatch) => {
         dispatch({type : "CHANGE_LOADING", value: false})
         dispatch({type : "CHANGE_EGFR", value: data})
         props.navigation.push("UACRDiagnose")
-    },2000)
+    },500)
 }
 
 export const SigninWithGoogle = (props) => async (dispatch) => {
@@ -396,10 +396,12 @@ async function excuteLoginFirebase (){
         webClientId: '1015532825099-mv0cmcscva88l9f81p5l7g2uqmt3isg8.apps.googleusercontent.com',
     });
 
-    const { accessToken,idToken } = await GoogleSignin.signIn();
+    const { idToken } = await GoogleSignin.signIn();
 
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken,accessToken);
-
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  
+    // Sign-in the user with the credential
     return auth().signInWithCredential(googleCredential);
 }
 

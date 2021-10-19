@@ -59,21 +59,30 @@ const EGFR = (props) =>{
         if(dataUser.birthdate){
            getAge = moment().diff(moment(dataUser.birthdate, "DD-MM-YYYY"), 'years')
         }
-        
-        setCreatinine(creatinine)
+
+        if(creatinine){
+          setCreatinine(creatinine)
+        }
+
         setAge(getAge.toString())
-        setRace(race)
        
+        if(race){
+          setRace(race)
+        }
+
         if(race){
           setActiveRace(race == 'Africa' ? 1 : 2)
         }
         if(dataUser.gender){
           setActiveGender(dataUser.gender == 'Male' ? 1 : 2)
         }
-        setGender(dataUser.gender)
+
+        if(dataUser.gender){
+          setGender(dataUser.gender)
+        }
         
     },[])
-
+   
     const activeGenderCheck = (id) =>{
         if(id == 1){
           setActiveGender(1); setGender("Male");
