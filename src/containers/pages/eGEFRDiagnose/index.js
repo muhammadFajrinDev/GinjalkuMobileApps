@@ -158,7 +158,7 @@ const DiagnoseEGFR = (props) => {
     return (
         <Fragment>
             <ScrollView>
-            <View style={{minHeight:800}}> 
+            <View style={{minHeight:850}}> 
             <HeaderBackBtn page="eGFR" navigation={props.navigation} title="Diagnosis eGFR" />
 
             <View style={styles.cardInformation}>

@@ -61,7 +61,7 @@ const EGFR = (props) =>{
         }
 
         if(creatinine){
-          setCreatinine(creatinine)
+          setCreatinine(creatinine) 
         }
 
         setAge(getAge.toString())

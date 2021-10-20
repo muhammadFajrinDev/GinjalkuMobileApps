@@ -4,6 +4,7 @@ import { getResultUACRDB, StoreToDBEGFR } from '../../../config/redux/action';
 import React, { Fragment, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     cardInformation: {
@@ -164,6 +165,7 @@ const UACRDiagnose = (props) => {
 
     return (
         <Fragment>
+            <ScrollView>
             <HeaderBackBtn page="UACR" navigation={props.navigation} title="Diagnosis UACR" />
 
             <View style={styles.cardInformation}>
@@ -195,7 +197,7 @@ const UACRDiagnose = (props) => {
             <View style={{ width: "70%", alignSelf: "center", marginVertical: 25 }}>
                 <ButtonClassic title="Simpan Riwayat" onPress={() => SaveCheck()} />
             </View>
-
+        </ScrollView>
         </Fragment>
     )
 }
