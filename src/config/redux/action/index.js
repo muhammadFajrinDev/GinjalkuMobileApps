@@ -4,6 +4,43 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import { Alert } from 'react-native';
 
+export const getResultEGFRDB = (id) => (dispatch) =>{
+    dispatch({type : "CHANGE_LOADING", value: true})
+    return new Promise ((resolve,reject)=>{
+        database().ref('/diagnose/ginjal/eGFR/' + id ).once('value')
+        .then(snapshot => {
+            if(snapshot.val()){
+                resolve(snapshot.val())
+                dispatch({type : "CHANGE_LOADING", value: false})
+            }
+        }).catch((Err)=>{
+            resolve(false)
+            Alert.alert(Err)
+            dispatch({type : "CHANGE_LOADING", value: false})
+        });
+    });
+}
+
+export const getResultUACRDB = (id) => (dispatch) =>{
+    console.log("UACR",id)
+    dispatch({type : "CHANGE_LOADING", value: true})
+    return new Promise ((resolve,reject)=>{
+        database().ref('/diagnose/ginjal/UACR/' + id ).once('value')
+        .then(snapshot => {
+            if(snapshot.val()){
+                console.log(snapshot.val())
+                resolve(snapshot.val())
+                dispatch({type : "CHANGE_LOADING", value: false})
+            }
+        }).catch((Err)=>{
+            resolve(false)
+            Alert.alert(Err)
+            dispatch({type : "CHANGE_LOADING", value: false})
+        });
+    });
+}
+
+
 export const saveEGFR = (props,data) => (dispatch) => {
     
     dispatch({type : "CHANGE_LOADING", value: true})

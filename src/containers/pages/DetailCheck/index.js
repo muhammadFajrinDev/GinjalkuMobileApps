@@ -19,6 +19,83 @@ const styles = StyleSheet.create({
     paragraf : { marginBottom: 15 }
 });
 
+const uacr_interpretation = (gfr, uacr) => {
+    let risk;
+  
+    if (uacr < 3) {
+        if (gfr == "G1" || gfr == "G2") {
+            if (gfr == "G1") {
+                risk = "G1_A1"
+            } else {
+                risk = "G2_A1"
+                
+            }
+        } else if (gfr == "G3a") {
+            risk = "G3a_A1";
+        } else if (gfr == "G3b") {
+            risk = "G3b_A1";
+        } else {
+            risk = "G3b_A2"
+        }
+    } else if (uacr < 29) {
+        if (gfr == "G1" || gfr == "G2") {
+            if (gfr == "G1") {
+                risk = "G1_A2"
+            } else {
+                risk = "G2_A2"
+            }
+        } else if (gfr == "G3a") {
+            risk = "G3a_A2";
+        } else {
+            if(gfr == "G3a"){
+                risk = "G3a_A3";
+            }
+        }
+    } else {
+        if (gfr == "G1" || gfr == "G2") {
+            if (gfr == "G1") {
+                risk = "G1_A3"
+            } else {
+                risk = "G2_A3"
+            }
+        } else {
+            if(gfr == "G4"){
+                risk = "G4_A1"
+            }else if(gfr == "G5"){
+                risk ="G5_A1"
+            }
+        }
+    }
+
+    return getRiskUACR(risk);
+}
+
+const getRiskUACR = (uacrRes) =>{
+    let risk;
+    if(uacrRes == "G1_A1"){
+        risk = "Risiko Rendah"
+    }else if(uacrRes == "G1_A2"){
+        risk = "Risiko Sedang"
+    }else if(uacrRes == "G1_A3"){
+        risk = "Risiko Tinggi"
+    }else if(uacrRes == "G2_A1"){
+        risk = "Risiko Rendah"
+    }else if(uacrRes == "G2_A2"){
+        risk = "Risiko Sedang"
+    }else if(uacrRes == "G2_A3"){
+        risk = "Risiko Tinggi"
+    }else if(uacrRes == "G3a_A1"){
+        risk = "Risiko Sedang"
+    }else if(uacrRes == "G3a_A2"){
+        risk = "Risiko Tinggi"
+    }else if(uacrRes == "G3a_A3"){
+        risk = "Risiko Sangat Tinggi"
+    }else if(uacrRes == "G4_A1" || uacrRes == "G5_A1"){
+        risk = "Risiko Sangat Tinggi"
+    }
+    return risk;
+}
+
 const Detail = (props) =>{
 
     const [detail, setDetail] = useState([]);
@@ -73,7 +150,11 @@ const Detail = (props) =>{
                 <Text style={styles.texttitle}>Hasil Pemeriksaan</Text>
 
                 <Text style={styles.content}> {'\u2022'} Stadium {detail.EGFR} </Text>
-                {/* <Text style={styles.content}> {'\u2022'} Resiko  </Text> */}
+                {
+                    detail.UACR && (
+                        <Text style={styles.content}> {'\u2022'} {uacr_interpretation(detail.EGFR, detail.UACR)}  </Text>
+                    )
+                }
             </View>
             
        </View>
